@@ -14,7 +14,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "课题组成员姓名排序表.md",
+                "file": "如何做好学术演讲.md",
                 "mode": "source",
                 "source": false
               }
@@ -34,7 +34,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "课题组成员姓名排序表.md",
+                "file": "如何做好学术演讲.md",
                 "mode": "preview",
                 "source": false
               }
@@ -92,7 +92,7 @@
             }
           },
           {
-            "id": "9b41aeb6a3a95353",
+            "id": "9ba80b3a8e49f88e",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -119,7 +119,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "课题组成员姓名排序表.md"
+                "file": "如何做好学术演讲.md"
               }
             }
           },
@@ -140,7 +140,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "课题组成员姓名排序表.md",
+                "file": "如何做好学术演讲.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -157,7 +157,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "课题组成员姓名排序表.md",
+                "file": "如何做好学术演讲.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -174,20 +174,21 @@
     "hiddenItems": {
       "switcher:打开快速切换": false,
       "daily-notes:打开/创建今天的日记": false,
-      "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "graph:查看关系图谱": false,
+      "workspaces:管理工作区布局": false
     }
   },
-  "active": "b615d2ba912d07a3",
+  "active": "663b793cb8788185",
   "lastOpenFiles": [
-    "毕业生毕业离校工作.md",
     "Obsidian学习.md",
-    "课题组成员姓名排序表.md",
     "购物单.md",
-    "几何推理/计算机怎样解几何题：谈谈自动推理.pdf",
     "OpenAI Codex 论文精读.md",
+    "课题组成员姓名排序表.md",
+    "毕业生毕业离校工作.md",
+    "几何推理/计算机怎样解几何题：谈谈自动推理.pdf",
     "支持向量机 (SVM).md",
     "图神经网络 (GNN).md",
     "Markdown学习.md",
