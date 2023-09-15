@@ -8,7 +8,6 @@
 
 [A Gentle Introduction to Graph Neural Networks (distill.pub)](https://distill.pub/2021/gnn-intro/)
 
-
 # 引入
 
 > 关于GNN...
