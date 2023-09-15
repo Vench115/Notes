@@ -6,7 +6,7 @@
       {
         "id": "324657264a03ee0c",
         "type": "tabs",
-        "dimension": 50.46267735965454,
+        "dimension": 50.21645021645021,
         "children": [
           {
             "id": "663b793cb8788185",
@@ -14,7 +14,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "如何做好学术演讲.md",
+                "file": "图神经网络 (GNN).md",
                 "mode": "source",
                 "source": false
               }
@@ -26,7 +26,7 @@
       {
         "id": "feeb6b02e7c5092a",
         "type": "tabs",
-        "dimension": 49.537322640345465,
+        "dimension": 49.78354978354979,
         "children": [
           {
             "id": "b615d2ba912d07a3",
@@ -34,7 +34,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "如何做好学术演讲.md",
+                "file": "图神经网络 (GNN).md",
                 "mode": "preview",
                 "source": false
               }
@@ -103,7 +103,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 255.5
+    "width": 259.5
   },
   "right": {
     "id": "098023c1e77c72aa",
@@ -119,7 +119,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "如何做好学术演讲.md"
+                "file": "图神经网络 (GNN).md"
               }
             }
           },
@@ -140,7 +140,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "如何做好学术演讲.md",
+                "file": "图神经网络 (GNN).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -157,9 +157,19 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "如何做好学术演讲.md",
+                "file": "图神经网络 (GNN).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "58e962b3f3e0ed8c",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency"
               }
             }
           }
@@ -183,6 +193,7 @@
   },
   "active": "663b793cb8788185",
   "lastOpenFiles": [
+    "如何做好学术演讲.md",
     "Obsidian学习.md",
     "购物单.md",
     "OpenAI Codex 论文精读.md",
@@ -192,7 +203,6 @@
     "支持向量机 (SVM).md",
     "图神经网络 (GNN).md",
     "Markdown学习.md",
-    "如何做好学术演讲.md",
     "几何推理/几何推理笔记.md",
     "几何推理",
     "必须物品.md",
