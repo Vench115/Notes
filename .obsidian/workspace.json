@@ -6,7 +6,7 @@
       {
         "id": "324657264a03ee0c",
         "type": "tabs",
-        "dimension": 51.638837353123066,
+        "dimension": 51.79012345679013,
         "children": [
           {
             "id": "663b793cb8788185",
@@ -15,7 +15,7 @@
               "type": "markdown",
               "state": {
                 "file": "Git & GitHub.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               }
             },
@@ -26,7 +26,7 @@
       {
         "id": "feeb6b02e7c5092a",
         "type": "tabs",
-        "dimension": 48.361162646876934,
+        "dimension": 48.20987654320988,
         "children": [
           {
             "id": "b615d2ba912d07a3",
@@ -103,7 +103,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 259.5
+    "width": 256.5
   },
   "right": {
     "id": "098023c1e77c72aa",
@@ -193,16 +193,16 @@
   },
   "active": "663b793cb8788185",
   "lastOpenFiles": [
-    "毕业生毕业离校工作.md",
-    "Obsidian学习.md",
-    "图神经网络 (GNN).md",
-    "Markdown学习.md",
     "购物单.md",
+    "Git & GitHub.md",
+    "Markdown学习.md",
+    "OpenAI Codex 论文精读.md",
+    "Obsidian学习.md",
+    "毕业生毕业离校工作.md",
+    "图神经网络 (GNN).md",
     "如何做好学术演讲.md",
     "课题组成员姓名排序表.md",
     "支持向量机 (SVM).md",
-    "Git & GitHub.md",
-    "OpenAI Codex 论文精读.md",
     "几何推理/计算机怎样解几何题：谈谈自动推理.pdf",
     "几何推理/几何推理笔记.md",
     "几何推理",
