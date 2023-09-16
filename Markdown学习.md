@@ -28,17 +28,19 @@
 |单元格数据4|单元格数据5|单元格数据6|
 
 # 代码块
+
 ```python
 print("Have a Great Day!")
 ```
 
 # 文内注释
+
 鲁迅原名叫什么[^1]
 
 
 [^1]: 这是一个注解，鲁迅原名周樟寿，后改名周树人
 
-# Callouts 着重
+# Callouts 着重强调
 >[!note]
 >callout 
 >a note
