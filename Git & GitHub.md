@@ -523,8 +523,10 @@ git rm <需要删除的文件名>
 
 仅删除暂存区：
 ```Shell
-git re --cached <file name>
+git rm --cached <file name>
 ```
+
+以上命令可以实现将文件去除版本控制，可见链接：[git把某个文件去除版本控制_git取消文件的版本控制_CSDN](https://blog.csdn.net/HakuMaster/article/details/127645288?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_utm_term~default-8-127645288-blog-122438868.235^v38^pc_relevant_sort_base1&spm=1001.2101.3001.4242.5&utm_relevant_index=11)。
 
 递归删除某个目录下的**所有**子目录和文件
 ```Shell
