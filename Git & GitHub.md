@@ -684,3 +684,33 @@ Tag:1(主版本号).2(次版本号).3(修订版本)
 	- 定期合并成功验证的分支，及时删除已经合并的分支
 	- 保持合适的分支数量，确保及时将功能性分支合并回主分支
 	- 为分支设置合适的管理权限
+
+---
+
+# 换行符相关
+
+[git 处理和修改行结束符（CRLF和LF）](https://blog.csdn.net/ccfxue/article/details/52625806?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522169494981316800197087016%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=169494981316800197087016&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-52625806-null-null.142^v94^insert_down1&utm_term=git%20crlf&spm=1018.2226.3001.4187)
+
+如果我们在Windows平台上写程序，或者我们在与其他人协作时，我们处在不同的系统上进行开发，那么我们可能会遇到行尾结束符的问题。
+
+这是因为Windows使用`回车`和`换行`两个字符来结束一行，而Mac和Linux只使用`换行`这一个字符。虽然这看着是一个小问题，但是它会极大地绕轮平台协作。
+
+为解决这个问题，Git可以在你提交时，自动地把行结束符`CRLF`转换成`LF`，而在签出代码时把`LF`转换成`CRLF`。用`core.autocrlf`来打开此项功能，如果是在Windows系统上，把它设置成 true，这样当签出代码时，LF 会被转换成 CRLF。
+
+```shell
+git config --global core.autocrlf true
+```
+
+Linux 或 Mac 系统使用`LF`作为行结束符，因此你不想 Git 在签出文件时进行自动的转换；当一个以 CRLF 为行结束符的文件不小心被引入时，你肯定想进行修正，那么就把`core.autocrlf`设置成`input`来告诉 Git 在提交时把 CRLF 转换成 LF，签出时不转换。 
+
+```shell
+git config --global core.autocrlf input
+```
+
+参考上面的配置方法，你就可以在 Windows 系统上，签出文件时保留 CRLF，而在 Mac 和 Linux 系统上，包括仓库中，保留 LF 。  
+
+如果你是 Windows 程序员，且正在开发仅运行在 Windows 上的项目，可以设置`false`取消此功能，把回车符记录在库中。
+
+```shell
+git config --global core.autocrlf false
+```
