@@ -4,12 +4,17 @@
 
 > 记录一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
 
-# 快速建库 <font color=red>待补充</font>
+# 快速建库
 
 ## 存在本地仓库
 
-1. git init 建立本地仓库（创建.git文件）
-2. 
+1. `git init`建立本地仓库，即创建.git文件
+	1. `echo "# This is a Readme file" >> README.md`
+	2. `git add README.md`
+	3. `git commit -m "first commit"`
+3. `git branch -M main`设置主分支名称
+4. `git remote add origin <远程仓库url地址>`添加远程仓库
+5. `git push -u origin main`完成创建后，将本地仓库推送至远程仓库
 
 ## 从远程仓库clone
 
@@ -27,7 +32,7 @@ git init
 git clone <仓库url>
 ```
 
-将远程仓库内容直接同步到本地仓库中即可。
+将远程仓库内容直接同步到本地仓库中即可，这里可能会遇到身份验证的问题，例如使用SSH加密方法。
 
 ---
 

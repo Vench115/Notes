@@ -1,2 +1,7 @@
 # Notes
-Notes Repository for Obsidian
+
+My Obsidian Notes Repository.
+
+Welcome and enjoy learning.
+
+Progress infinitely!
