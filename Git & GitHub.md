@@ -2,9 +2,11 @@
 
 [【GitHour】Git教程](https://www.bilibili.com/video/BV1HM411377j/?spm_id_from=333.337.search-card.all.click)
 
-> 记录一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
+> 记录和梳理一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
 
 # 快速建库
+
+此处可以参考GitHub中的配置仓库部分(QcccccQ)
 
 ## 存在本地仓库
 
@@ -74,13 +76,15 @@ git clone <仓库地址>
 git remote add <远程仓库名 默认origin> <远程仓库url>
 ```
 
-将远程仓库链接到本地仓库中，再使用命令：
+将远程仓库链接到本地仓库中，
+再使用命令：
 
 ```shell
 git remote
 ```
 
 查看远程仓库是否链接完成，以及远程仓库的命名。
+
 
 此时，也可以使用命令：
 
@@ -89,6 +93,18 @@ git remote rename <原名> <新名>
 ```
 
 来重新命名远程仓库**在本地仓库中**显示的名字。
+
+```shell
+git remote -v
+```
+
+上述命令可以查看远程分支的命名，以及其具体的`url`地址。
+
+```shell
+git remote set-url --add <远程分支名> <仓库url>
+```
+
+该命令可以新增远程仓库的地址，也可以用参数`--delete`删除，做到更改具体仓库地址的操作。
 
 ---
 
