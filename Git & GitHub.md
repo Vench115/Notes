@@ -1,6 +1,10 @@
-# 视频资源
+# 学习资源
 
 [【GitHour】Git教程](https://www.bilibili.com/video/BV1HM411377j/?spm_id_from=333.337.search-card.all.click)
+
+强烈推荐GitHub官方的文档，可以适时查阅使用：
+
+[GitHub Docs](https://docs.github.com/zh)
 
 > 记录和梳理一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
 
@@ -112,6 +116,8 @@ git remote set-url --add <远程分支名> <仓库url>
 
 # 远程仓库使用协议 ssh
 
+[通过 SSH 连接到 GitHub - GitHub 文档](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh)
+
 远程仓库的网址采用两种方式`HTTPS`和`SSH`：
 - HTTPS在我们将本地代码push到远程仓库时，需要验证用户名和密码
 - SSH不需要验证用户名和密码，但是需要再GitHub上添加SSH公钥的配置
@@ -120,9 +126,10 @@ git remote set-url --add <远程分支名> <仓库url>
 
 [检查现有 SSH 密钥 - GitHub 文档](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys)
 
-打开Git Bash，输入命令：
+打开Git Bash，输入指令 `ls -al ~/.ssh` 以查看是否存在现有的 SSH 密钥。
 ```shell
 ls -al ~/.ssh
+# Lists the files in your .ssh directory, if they exist
 ```
 
 可以查看是否存在现有的SSH密钥。
@@ -159,6 +166,23 @@ IdentifyFile ~/.ssh/test
 ```
 
 以上内容的意思是：当我们访问GitHub时，指定使用`.ssh`下的`test`这个密钥。
+
+---
+
+# 在其他位置与仓库同步
+
+在其他位置指的是，我们需要在全新的环境中进行配置同步，此时我们需要配置SSH key，也就是上传。
+
+可以通过在终端输入 `ssh -T git@github.com` 来测试本地密钥是否正常工作：
+
+```shell
+$ ssh -T git@github.com
+# Attempt to SSH in to github
+> Hi USERNAME! You've successfully authenticated, but GitHub does not provide
+> shell access.
+```
+
+先保存吧，这里还需要重新看一下怎么弄。
 
 ---
 
