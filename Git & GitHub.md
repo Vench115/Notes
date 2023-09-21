@@ -127,6 +127,7 @@ git remote set-url --add <远程分支名> <仓库url>
 [检查现有 SSH 密钥 - GitHub 文档](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys)
 
 打开Git Bash，输入指令 `ls -al ~/.ssh` 以查看是否存在现有的 SSH 密钥。
+
 ```shell
 ls -al ~/.ssh
 # Lists the files in your .ssh directory, if they exist
@@ -171,7 +172,9 @@ IdentifyFile ~/.ssh/test
 
 # 在其他位置与仓库同步
 
-在其他位置指的是，我们需要在全新的环境中进行配置同步，此时我们需要配置SSH key，也就是上传。
+在其他位置指的是，我们需要在全新的环境中进行配置同步，此时我们需要配置SSH key，感觉如果采用了该方法，则需要生成一个本地的SSH key，并添加到GitHub上才能使用。
+
+同时，不要忘记配置我们的**用户名**、**邮箱**和**密码**。
 
 可以通过在终端输入 `ssh -T git@github.com` 来测试本地密钥是否正常工作：
 
@@ -182,7 +185,62 @@ $ ssh -T git@github.com
 > shell access.
 ```
 
-先保存吧，这里还需要重新看一下怎么弄。
+如果没有可用的本地密钥，那么则需要：[新增 SSH 密钥到 GitHub 帐户 - GitHub 文档](https://docs.github.com/zh/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+为 GitHub.com 上的帐户添加新 SSH 身份验证密钥后，可以重新配置任何本地存储库以使用 SSH。 有关详细信息，请参阅“[管理远程仓库](https://docs.github.com/zh/get-started/getting-started-with-git/managing-remote-repositories#switching-remote-urls-from-https-to-ssh)”。
+
+将远程 URL 从 HTTPS 切换到 SSH：
+
+1. 打开 `Git Bash`。
+2. 将当前工作目录更改为我们的本地仓库。
+3. 列出现有远程仓库以获取要更改的远程仓库的名称。
+
+```shell
+$ git remote -v
+> origin  https://github.com/OWNER/REPOSITORY.git (fetch)
+> origin  https://github.com/OWNER/REPOSITORY.git (push)
+```
+
+4. 使用 `git remote set-url` 命令将远程 URL 从 HTTPS 更改为 SSH。
+
+```shell
+git remote set-url origin git@github.com:OWNER/REPOSITORY.git
+```
+
+5. 验证远程 URL 是否已更改。
+
+```shell
+$ git remote -v
+# Verify new remote URL
+> origin  git@github.com:OWNER/REPOSITORY.git (fetch)
+> origin  git@github.com:OWNER/REPOSITORY.git (push)
+```
+
+使用 `git remote rm` 命令从存储库中删除远程 URL。`git remote rm` 命令采用一个参数：远程名称（例如 `destination`）。
+
+从存储库中删除远程 URL 只会取消本地和远程存储库的链接，它不会删除远程存储库。
+
+完成以后，下次将 `git fetch`、`git pull` 或 `git push` 执行到远程存储库时，系统将要求你提供 GitHub 用户名和密码。
+
+当 Git 提示你输入密码时，请输入你的personal access token，[[Git & GitHub#个人访问令牌]] 。 或者，可以使用 [Git 凭据管理器](https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md)等凭据帮助程序。
+
+通过上述内容创建完细粒度个人访问令牌后，就可以在命令行上使用了。
+
+我们可以在通过 HTTPS 执行 Git 操作时输入它，而不是密码。
+
+例如，若要在命令行上克隆存储库，请输入以下 `git clone` 命令。 然后，系统会提示你输入用户名和密码。 当系统提示输入密码时，请输入 personal access token 而不是密码。
+
+```shell
+$ git clone https://github.com/USERNAME/REPO.git
+Username: YOUR_USERNAME
+Password: YOUR_PERSONAL_ACCESS_TOKEN
+```
+
+Personal access token 只能用于 HTTPS Git 操作。 如果存储库使用 SSH 远程 URL，则需要[将远程 URL 从 SSH 切换到 HTTPS](https://docs.github.com/zh/get-started/getting-started-with-git/managing-remote-repositories#switching-remote-urls-from-ssh-to-https)。
+
+如果没有提示您输入用户名和密码，说明您的凭据可能已缓存在计算机上。 可[在密钥链中更新凭据](https://docs.github.com/zh/get-started/getting-started-with-git/updating-credentials-from-the-macos-keychain)，从而用令牌替换旧密码。
+
+可以使用 Git 客户端缓存 personal access token 而不是为每个 HTTPS Git 操作手动输入 personal access token。 Git 会将您的凭据临时存储在内存中，直到过期为止。 您还可以将令牌存储在 Git 可以在每个请求之前读取的纯文本文件中。 有关详细信息，请参阅“[在 Git 中缓存 GitHub 凭据](https://docs.github.com/zh/get-started/getting-started-with-git/caching-your-github-credentials-in-git)”。
 
 ---
 
@@ -756,3 +814,36 @@ git config --global core.autocrlf input
 ```shell
 git config --global core.autocrlf false
 ```
+
+---
+
+# 个人访问令牌
+
+**Personal Access Token**
+
+Git 的基于密码的身份验证已被删除，以支持更安全的身份验证方法。有关详细信息，请参阅“[管理个人访问令牌](https://docs.github.com/zh/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)”。
+
+可以[使用凭据帮助程序](https://docs.github.com/zh/get-started/getting-started-with-git/caching-your-github-credentials-in-git)，以便 Git 每次与 GitHub 通信时都会记住你的 GitHub 用户名和 personal access token。
+
+使用 [GitHub API](https://docs.github.com/zh/rest/overview/authenticating-to-the-rest-api) 或[命令行](https://docs.github.com/zh/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#using-a-personal-access-token-on-the-command-line)时，可使用 Personal access token 替代密码向 GitHub 进行身份验证。
+
+## 令牌的类型
+
+GitHub 目前支持两种类型的 personal access token：fine-grained personal access token 和 personal access tokens (classic)。GitHub 建议尽可能使用 fine-grained personal access token 而不是 personal access tokens (classic)。
+
+组织所有者可以设置策略来限制 personal access tokens (classic) 对其组织的访问。
+
+如果选择使用 personal access token (classic)，请记住它将授予对有权访问的组织内的所有存储库以及个人帐户中的所有个人存储库的访问权限。
+
+作为安全预防措施，GitHub 会自动**删除**一年内未使用过的 personal access token。 为了提供进一步的安全性，强烈建议将过期时间添加到 personal access token。
+
+## 确保 personal access token 安全
+
+Personal access token 类似于密码，它们具有相同的固有安全风险。 创建新的 personal access token 之前，请考虑是否有更安全的身份验证方法可供使用：
+
+- 若要从命令行访问 GitHub，可以使用 [GitHub CLI](https://docs.github.com/zh/github-cli/github-cli/about-github-cli) 或 [Git 凭据管理器](https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md)，而不是创建 personal access token。
+- 在 GitHub Actions 工作流中使用 personal access token 时，请考虑是否可以改用内置 `GITHUB_TOKEN`。 有关详细信息，请参阅“[自动令牌身份验证](https://docs.github.com/zh/actions/security-guides/automatic-token-authentication)”。
+
+如果无法使用这些选项，但必须创建 personal access token，请考虑使用其他 CLI 服务安全地存储令牌。
+
+在脚本中使用 personal access token 时，可以将令牌存储为机密，并通过 GitHub Actions 运行脚本。 有关详细信息，请参阅“[在 GitHub Actions 中使用机密](https://docs.github.com/zh/actions/security-guides/encrypted-secrets)”。还可以将令牌存储为 Codespaces 机密，并在 Codespaces 中运行脚本。 有关详细信息，请参阅“[管理 codespace 的机密](https://docs.github.com/zh/codespaces/managing-your-codespaces/managing-encrypted-secrets-for-your-codespaces)”。
