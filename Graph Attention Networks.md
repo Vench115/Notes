@@ -1,4 +1,7 @@
-# 论文地址
+# 原文
 
-[pdf (openreview.net)](https://openreview.net/pdf?id=rJXMpikCZ)
+[Graph Attention Networks PDF (openreview.net)](https://openreview.net/pdf?id=rJXMpikCZ)
+
+# 摘要
+
 
