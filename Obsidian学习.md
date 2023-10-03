@@ -1,8 +1,8 @@
-> 记录一些Obsidian学习相关的基本内容、插件、思路等等
+> 记录一些Obsidian学习相关的基本内容、插件、笔记思路等等
 
 # 官网入门
 
-[Ob新手入门必读——常见Q&A（持续建设ing...请勿在此回复及提问）](https://forum-zh.obsidian.md/t/topic/3222)
+[Ob新手入门必读——常见Q&A（持续建设ing）](https://forum-zh.obsidian.md/t/topic/3222)
 
 # 二丫讲梵分享
 
@@ -18,6 +18,8 @@
 
 # Markdown
 
-[[Markdown学习]]
+在 Ob 中支持的文档内容格式，即Markdown文件，具体的 Markdown 格式可以在 [[Markdown学习]] 中找到。
 
-在 Ob 中支持的文档内容格式，即Markdown文件。
+Markdown 从 HTML 来，它更加精简高效，用纯文本的方式实现格式化内容的目的。其方式是用文本中的符号来实现格式化，好处是可以少用鼠标。
+
+
