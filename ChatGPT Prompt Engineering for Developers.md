@@ -1,8 +1,12 @@
 # 网页资源
 
-外网：[deeplearning.ai/chatgpt-prompt-eng](https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction)
+Deeplearning.ai：
+- 貌似不需要梯子
+- [ChatGPT Prompt for Developers](https://learn.deeplearning.ai/chatgpt-prompt-eng/lesson/1/introduction)
+- [Pair Programming with a LLM](https://learn.deeplearning.ai/pair-programming-llm/lesson/1/introduction)
 
-B站：[ChatGPT Prompt提示词课程 吴恩达](https://www.bilibili.com/video/BV1Tw411S7ni/?spm_id_from=333.788.recommend_more_video.1&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
+B站：
+- [ChatGPT Prompt提示词课程 吴恩达](https://www.bilibili.com/video/BV1Tw411S7ni/?spm_id_from=333.788.recommend_more_video.1&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
 GPT提示词：
 - [ChatGPT 中文调教指南 (github.com)](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)
