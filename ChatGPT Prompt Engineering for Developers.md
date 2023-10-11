@@ -22,3 +22,15 @@ LLMs的强大不在于我们能够通过提示词来做很多“一次性”的�
 
 一些更加具体、更加清晰的提示词，甚至是一小段与内容相关的内容片段，让LLM提前了解，都可以让LLM更好地生成我们真正想要的内容。
 
+# 两个原则
+
+1. 提供清晰、明确、具体的指令 (Write Clear and Specific Instructions)
+2. 给LLM一点时间去思考 (Give the model time to think)
+
+# Principal 1
+
+> Write Clear and Specific Instructions
+
+你需要给模型一个清晰且具体的指令，它才能按照你的指令完成工作。
+
+此处，clear $\ne$ short。
