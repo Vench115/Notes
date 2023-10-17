@@ -8,7 +8,7 @@ Deeplearning.ai：
 B站：
 - [ChatGPT Prompt提示词课程 吴恩达](https://www.bilibili.com/video/BV1Tw411S7ni/?spm_id_from=333.788.recommend_more_video.1&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
-GPT提示词：
+ChatGPT Prompts Engineering：
 - [ChatGPT 中文调教指南 (github.com)](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)
 - [ChatGPT prompt curation to use ChatGPT better. (github.com)](https://github.com/f/awesome-chatgpt-prompts)
 
@@ -34,3 +34,4 @@ LLMs的强大不在于我们能够通过提示词来做很多“一次性”的�
 你需要给模型一个清晰且具体的指令，它才能按照你的指令完成工作。
 
 此处，clear $\ne$ short。
+
