@@ -157,6 +157,7 @@ ls -al ~/.ssh
 ssh-keygen -t rsa -b 4096
 # or
 ssh-keygen -t ed25519 -C "your_email@example.com"
+# ed25519 recommended
 ```
 
 来生成我们的SSH密钥。`-t`指定协议为RSA / ed25519，`-b`指定大小为4096，`-C`指定用户。
@@ -165,7 +166,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 
 如果之前配置过SSH密钥，那么此时最好不要直接回车，因为之前已经生成过`id_rsa`这个密钥文件，如果再次回车，它会覆盖掉我们之前的密钥文件，该操作是不可逆的。所以此时，我们需要输入一个新的文件名。
 
-刚刚的操作会生成两个新文件：没有任何扩展名的`<密钥文件名>`即私钥文件，有扩展名的`<公钥文件名.pub`的就是公钥文件。
+刚刚的操作会生成两个新文件：没有任何扩展名的`<密钥文件名>`即私钥文件，有扩展名的`<公钥文件名.pub>`的就是公钥文件。
 
 我们需要打开公钥文件，然后复制公钥文件的内容，回到GitHub页面，点击右上角我们的头像，在`settings`中找到`SSH and GPG keys`，即密钥配置选项。
 
@@ -187,11 +188,16 @@ IdentifyFile ~/.ssh/test
 
 # 在其他环境与仓库同步
 
-在其他位置指的是，我们需要在**全新的环境**中进行配置同步，此时我们需要配置SSH key，感觉如果采用了该方法，则需要生成一个本地的SSH key，并添加到GitHub上才能使用。
+在其他环境指的是，我们需要在**全新的环境**中进行配置同步，此时我们需要配置SSH key，感觉如果采用了该方法，则需要先生成一个本地的SSH key，并将其添加到GitHub上才可以使用。
 
 同时，不要忘记配置我们的**用户名**、**邮箱**和**密码**。
 
-可以通过在终端输入 `ssh -T git@github.com` 来测试本地密钥是否正常工作：
+```shell
+git config --global user.name "USER_NAME"
+git config --global user.email "USER_EMAIL"
+```
+
+可以通过在终端 `Git Bash` 中输入 `ssh -T git@github.com` 来测试本地密钥是否正常工作：
 
 ```shell
 $ ssh -T git@github.com
@@ -204,11 +210,11 @@ $ ssh -T git@github.com
 
 为 GitHub.com 上的帐户添加新 SSH 身份验证密钥后，可以重新配置任何本地存储库以使用 SSH。 有关详细信息，请参阅“[管理远程仓库](https://docs.github.com/zh/get-started/getting-started-with-git/managing-remote-repositories#switching-remote-urls-from-https-to-ssh)”。
 
-将远程 URL 从 HTTPS 切换到 SSH：
+**将远程 URL 从 HTTPS 切换到 SSH：**
 
-1. 打开 `Git Bash`。
-2. 将当前工作目录更改为我们的本地仓库。
-3. 列出现有远程仓库以获取要更改的远程仓库的名称。
+1. 打开 `Git Bash`
+2. 将当前工作目录更改为我们的本地仓库
+3. 列出现有远程仓库以获取要更改的远程仓库的名称
 
 ```shell
 $ git remote -v
