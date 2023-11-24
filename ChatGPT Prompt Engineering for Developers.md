@@ -7,6 +7,7 @@ Deeplearning.ai：
 
 B站：
 - [ChatGPT Prompt提示词课程 吴恩达](https://www.bilibili.com/video/BV1Tw411S7ni/?spm_id_from=333.788.recommend_more_video.1&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
+- [给编程开发者的「ChatGPT」必会使用指南](https://www.bilibili.com/video/BV1iN411U7sy/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
 ChatGPT Prompts Engineering：
 - [ChatGPT 中文调教指南 (github.com)](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)
