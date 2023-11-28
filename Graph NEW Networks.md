@@ -75,7 +75,19 @@ $$
 \zeta \le O \left ( \frac {\log n} {1-\max \{ \lambda_2, |\lambda_n| \}} \right )
 $$
 
-Suspended Animation Limit从上述的定理中推出，它大致地表示了网状的G决定了GCN的最大允许的深度。在由图G定义的矩阵 $\hat A$ 中所有的特征值之中，$\lambda_2$ 测量了图G由多少是分离的；而且 $\lambda_n$ 测量了图G双边性的大小。
+Suspended Animation Limit从上述的定理中推出，它大致地表示了网状的G决定了GCN的最大允许的深度。在由图G定义的矩阵 $\hat A$ 中所有的特征值之中，$\lambda_2$ 测定了图G的分离 (disconnected) 程度；而 $\lambda_n$ 则测量了图G的二分性 (bipartite) 的大小。
+
+当图G是可约的(当 $\lambda_2 =1$ 时)，或者是二分性时，$\zeta \to \infty$ 而且模型不会遭受Suspended Animation Problem的影响。
+
+同时，作者提到了另一篇文章中，其他作者提出的比较朴素的(naive)残差GCN变体，那么这种方法一样也会收到Suspended Animation Problem的影响。对于等变的全连接层映射，这种方法的公式也可以被简化成“懒”马尔可夫链层，那么这种残差块并不会帮助解决问题。
+
+### Corollary 1
+
+令 $1 \ge \lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_n$ 是由网络G定义的矩阵 $\hat A$ 的特征值，那么该GCN模型所关联的Suspended Animation Limit即为：
+
+$$
+\zeta \le O \left ( \frac {\log \min_i \frac 1 {\pi^*(i)}} {1-\lambda_2} \right )
+$$
 
 # Graph Attention Network
 
