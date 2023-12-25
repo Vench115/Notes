@@ -44,14 +44,16 @@
 
 > 可能存在的优势、主要是与其他方法对比
 
-大概率选用Graph Transformers的变种，也就是GeoDRL中提到的方法图transformer的方法
+大概率选用Graph Transformers的变种，也就是GeoDRL中提到的方法图transformer的方法，[[Graphormer]]。
 
 
-# DRL 背景介绍
+# GeoDRL
 
-几何问题求解这个问题就是，我们给出一个几何问题的描述，这个描述通常包含了一张几何图像和文本，求解的目标就是去生成一连串的解题步骤，最终能够推导到答案。那解决一个几何问题包括两个关键步骤：解析和推理，解析就包含从问题的图像和文本描述中提取解释，而推理呢，就是用这些解释信息来推理出题目的解答。
+## 背景介绍
 
-# DRL 相关工作
+几何问题求解这个问题就是，我们给出一个几何问题的描述，这个描述通常包含了一张几何图像和文本，求解的目标就是去生成一连串的解题步骤，最终能够推导到答案。解决一个几何问题包括两个关键步骤：解析和推理，解析就包含从问题的图像和文本描述中提取解释，而推理呢，就是用这些解释信息来推理出题目的解答。
+
+## 相关工作
 
 早期的工作关注于几何定理证明，多个学者通过逻辑推理的方式，证明出一个几何问题的解。这些早期学者的尝试，利用了符号计算系统，来进行逻辑推导以及符号操作。近期来说，对于求解几何问题的系统，例如GEOS和Inter-GPS，已经有了很多的发展。这些系统将几何图像和文本看作是输入，并且提供一个问题的解答，这些解答中包含了处理多模态的信息，利用预先定义的定理知识，进行数值的推理。
 
@@ -106,12 +108,12 @@
 > 在《几何定理机器证明三十年》中提到的一些特定名词的翻译
 
 - [ ] Geometry Theorem Prover：几何定理求解器
-- [ ] numerical parallel methods：数值并行 代数方法 数值并行法
+- [ ] numerical parallel methods：数值并行法 一种代数方法
 - [ ] polynomial system triangulation elimination algorithm：多项式系统三角化消元方法
 - [ ] cylindrical algebraic decomposition：柱面代数分解方法
 - [ ] Geometric Invariants：几何不变量 吴法的由来
 - [ ] search-based synthesis methods：基于搜索的综合方法
 - [ ] additional predicates and theorems：附加的谓词和定理
 - [ ] Formal method of Program：基于程序序列的形式化方法 将几何证明过程转化为程序序列
-- [ ] operators 运算符 自定义的符号运算等等
-- [ ] the Expression Tree 表达式树
+- [ ] operators：运算符 或者其他自定义的符号运算等等
+- [ ] the Expression Tree：表达式树
