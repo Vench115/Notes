@@ -1,0 +1,215 @@
+{
+  "main": {
+    "id": "4cc99fcadf8070bc",
+    "type": "split",
+    "children": [
+      {
+        "id": "324657264a03ee0c",
+        "type": "tabs",
+        "dimension": 51.358024691358025,
+        "children": [
+          {
+            "id": "663b793cb8788185",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Git & GitHub.md",
+                "mode": "source",
+                "source": false
+              }
+            },
+            "group": "54ecca27050db0c1"
+          }
+        ]
+      },
+      {
+        "id": "feeb6b02e7c5092a",
+        "type": "tabs",
+        "dimension": 48.641975308641975,
+        "children": [
+          {
+            "id": "b615d2ba912d07a3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Git & GitHub.md",
+                "mode": "preview",
+                "source": false
+              }
+            },
+            "group": "54ecca27050db0c1"
+          },
+          {
+            "id": "47befbbe73ec8fc3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "购物单.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "35879ed008228886",
+    "type": "split",
+    "children": [
+      {
+        "id": "e5addcf8ae920714",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ab1f75524c0d0d44",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byModifiedTime"
+              }
+            }
+          },
+          {
+            "id": "7b235797797147d8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9ba80b3a8e49f88e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 250.5
+  },
+  "right": {
+    "id": "098023c1e77c72aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "7364586d29a51daa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7bf7c7c53c9d4ce2",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Git & GitHub.md"
+              }
+            }
+          },
+          {
+            "id": "14214f6ddbc5c974",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "433087a8d3c87ff4",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Git & GitHub.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "43de8436b9f1899c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Git & GitHub.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "58e962b3f3e0ed8c",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "canvas:新建白板": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "graph:查看关系图谱": false,
+      "workspaces:管理工作区布局": false
+    }
+  },
+  "active": "663b793cb8788185",
+  "lastOpenFiles": [
+    "README.md",
+    "Git & GitHub.md",
+    "购物单.md",
+    "课题组成员姓名排序表.md",
+    "Markdown学习.md",
+    "OpenAI Codex 论文精读.md",
+    "Obsidian学习.md",
+    "毕业生毕业离校工作.md",
+    "图神经网络 (GNN).md",
+    "如何做好学术演讲.md",
+    "支持向量机 (SVM).md",
+    "几何推理/计算机怎样解几何题：谈谈自动推理.pdf",
+    "几何推理/几何推理笔记.md",
+    "几何推理",
+    "必须物品.md",
+    "未命名.canvas",
+    "5B257E73.png",
+    "2023-06-17.md"
+  ]
+}

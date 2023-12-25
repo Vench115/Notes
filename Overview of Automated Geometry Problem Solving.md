@@ -4,7 +4,7 @@
 
 # Papers
 
-- [A Comprehensive Survey on GNN](https://arxiv.org/pdf/1901.00596.pdf)
+- ~~[A Comprehensive Survey on GNN](https://arxiv.org/pdf/1901.00596.pdf)~~
 - [GeoDRL](https://aclanthology.org/2023.findings-acl.850.pdf)
 - [FormalGeo](https://arxiv.org/pdf/2310.18021)，arXiv上已经更新到了版本V3
 
@@ -37,11 +37,7 @@
 - 概率预测
 
 符号主义学派大类方法：
-- 图的方法
-
-> ~~不要只说GNN的发展历程~~
-
-~~首先是关于GNN的一些背景介绍，在这个领域当中，最早的概念版模型可以追溯到2005年。那么经过这么多年的发展，在GNN的方法上逐渐涌现了~~
+- 图的方法？
 
 
 # 方法对比/未来展望
