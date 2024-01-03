@@ -102,3 +102,8 @@ GAT leverages masked Self-Attentional layers to address the shortcomings of GCN.
 # Recurrent GNN
 
 Involve the **Recurrent Neural Network** for Deep Graph Representations.
+
+
+# All in One: Multi-task Prompting
+
+[[2307.01504] All in One: Multi-task Prompting for Graph Neural Networks (arxiv.org)](https://arxiv.org/abs/2307.01504)
