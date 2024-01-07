@@ -13,6 +13,10 @@ ChatGPT Prompts Engineering：
 - [ChatGPT 中文调教指南 (github.com)](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)
 - [ChatGPT prompt curation to use ChatGPT better. (github.com)](https://github.com/f/awesome-chatgpt-prompts)
 
+其他：
+- [ChatGPT与DALL·E 3之间的行业「黑话」被人发现了](https://www.51cto.com/article/770658.html)
+- [Principled Instructions Are All You Need for Questioning LLaMA-1/2, GPT-3.5/4 (arxiv.org)](https://arxiv.org/pdf/2312.16171.pdf)
+
 # 提示词工程
 
 LLMs的强大不在于我们能够通过提示词来做很多“一次性”的任务，而是我们能够通过API的接口调用强大的LLM工具，来快速搭建我们自己的应用。
