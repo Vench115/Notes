@@ -2,7 +2,9 @@
 
 [Convolutional Networks on Graphs for Learning Molecular Fingerprints (arxiv.org)](https://arxiv.org/abs/1509.09292)
 
-使用了谱 (Spectual) 方法，借助于拉普拉斯特征值、切比雪夫等等方法，将周围的信息以有效的方式聚合起来。
+使用了谱 (Spectral) 方法，借助于拉普拉斯特征值、切比雪夫等等方法，将周围的信息以有效的方式聚合起来。
+
+[Understanding Convolutions on Graphs (distill.pub)](https://distill.pub/2021/understanding-gnns/)
 
 # G ResNet
 
