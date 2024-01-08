@@ -97,7 +97,7 @@ $$
 
 GAT leverages masked Self-Attentional layers to address the shortcomings of GCN.
 
-# Graph Transformers (GTN)
+# Graph Transformers (GT)
 
 [Graph Transformer Networks (arxiv.org)](https://arxiv.org/abs/1911.06455)
 
