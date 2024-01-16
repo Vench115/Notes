@@ -101,6 +101,12 @@ GAT leverages masked Self-Attentional layers to address the shortcomings of GCN.
 
 [Graph Transformer Networks (arxiv.org)](https://arxiv.org/abs/1911.06455)
 
+# Over-squashing Problem
+
+[ICLR 2022(得分8/8/8/10)|| 通过曲率理解图上的over-squashing和Bottleneck的问题 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/477802366)
+
+[Subsampling in Large Graphs Using Ricci Curvature Poster (ICLR.cc)](https://iclr.cc/virtual/2023/poster/10973)
+
 # Recurrent GNN
 
 Involve the **Recurrent Neural Network** for Deep Graph Representations.
