@@ -43,3 +43,5 @@
 > Our method to generate and train language models on purely synthetic data provides a general guiding framework for mathematical domains that are facing the same data-scarcity problem.
 
 他们的用于在纯综合数据上，生成和训练语言模型的方法，对于数学领域中所面对的同样的数据缺失问题，提供了一种通用的指导框架。
+
+# Construct
