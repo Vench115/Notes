@@ -2,7 +2,17 @@
 
 # Abstract
 
-证明奥林匹克等级的数学定理，不可否认地代表了在人类等级自动推理方面的显著里程碑，由于它们的难度在大学前，世界上最有天赋的学生中享誉盛名。
+证明奥林匹克等级的数学定理，不可否认地代表了在人类等级自动推理方面的显著里程碑，由于它们的难度在大学前，世界上最有天赋的学生中享誉盛名。最近的机器学习的技术路径，然而并不适用于大多数的数学领域，因为这种方法需要将人类的证明步骤转化为机器可验证的格式，而这个过程代价非常高。这个问题在几何领域甚至更加严重，因为几何问题特殊的转换要求所带来的挑战。该问题所带来的结果就是，训练数据的严重缺失。
+
+> We propose AlphaGeometry, a theorem prover for Euclidean plane geometry that sidesteps the need for human demonstrations by synthesizing millions of theorems and proofs across different levels of complexity.
+
+所以，DeepMind团队推出了AlphaGeometry，一个用于欧式平面几何的定理证明器(prover)，它能够规避提供人类证明演示的需求。方法简单来说，是合成成百万上千万条，来自于不同难度层级的定理和证明。
+
+AlphaGeometry是一个神经-符号(neuro-symbolic)系统，使用一个神经语言模型，在作者提出的大规模合成数据上，从零开始训练。并在具有挑战性的题目中，那些无穷无尽的分支节点上引导一个符号推理引擎，进行解题。
+
+在一个最近的30道奥赛级别的测试题目集中，AlphaGeometry解决了25道，超过了之前最好的，只能解决10道的方法，并且AG能够接近IMO金牌选手的平均表现水平。
+
+值得注意的是，AlphaGeometry能够生成人类可读的证明，解决了IMO 2000和IMO 2015中的所有几何问题，并且能够接受人类专家的评估检验。同时，它也在2004年的IMO定理中，发现了一个更为普遍的版本。
 
 # Main
 
