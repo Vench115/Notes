@@ -1,4 +1,4 @@
-# Origin
+# Source
 
 [https://github.com/0xk1h0/ChatGPT_DAN](https://github.com/0xk1h0/ChatGPT_DAN)
 
