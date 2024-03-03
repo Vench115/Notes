@@ -15,4 +15,3 @@
 # Cheat sheet
 
 [Cheat sheet — conda 24.1.2 documentation](https://docs.conda.io/projects/conda/en/stable/user-guide/cheatsheet.html)
-

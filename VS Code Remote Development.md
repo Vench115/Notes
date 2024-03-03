@@ -85,6 +85,8 @@ You can end your session over SSH and go back to running VS Code locally with *
 
 # Environments setting
 
+See details in [[Conda & Anaconda]].
+
 安装配置环境时，尽量不要使用 `conda install` ，可能会有莫名的报错。
 
 注意CUDA版本号和torch版本的匹配问题。
