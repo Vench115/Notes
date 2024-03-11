@@ -65,9 +65,9 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 ## 1
 
-作者提出的用于生成综合数据的方法在Fig.3中展示。他们首先在一个定理前提上采样一个随机的几何，作为符号引擎的输入来生成其派生。一个完整的用于采样的动作列表能够在Extended Data Table 1中找到。
+作者提出的用于生成综合数据的方法在Fig. 3中展示。他们首先在一个定理前提上采样一个随机的集合，作为符号引擎的输入来生成其派生。一个完整的用于采样的动作列表能够在Extended Data Table 1中找到。
 
-在作者的工作中，他们在一个高度并行的环境中，采样了接近一亿条类似的前提，这个过程在Methods部分有所描述。注意，作者并没有使用到任何，现有的带有人类设计问题集的定理前提，并且统一地、随机地采样了符合条件的构造。
+在作者的工作中，他们在一个高度并行的环境中，采样了接近一亿条类似的前提，这个过程在Methods部分有所描述。注意，作者并没有使用到任何现有的、带有人类设计问题集的定理前提，并且统一地、随机地采样了符合条件的构造。
 
 ## 2
 
@@ -79,8 +79,7 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 > 
 > a. 作者首先从一个随机的定理前提中采样一个巨大的集合。
 > 
-> b. 作者利用符号推理引擎来获得一个推理结论(deduction closure)，这能够返回一个命题的有向无环图。对于图中的每个顶点，作者再采用回溯来找到必要前提以及依赖(dependency deductions)的最小子集。
-> 例如，对于最右边的顶点”HA⊥BC“，回溯过程会返回绿色的子图。
+> b. 作者利用符号推理引擎来获得一个推理结论(deduction closure)，这能够返回一个命题的有向无环图。对于图中的每个顶点，作者再采用回溯来找到必要前提以及依赖(dependency deductions)的最小子集。例如，对于最右边的顶点”HA⊥BC“，回溯过程会返回绿色的子图。
 > 
 > c. 最小的前提以及相关的子图构成了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们与HA和BC的构造无关；因此，这些例子作为辅助构造被语言模型学习。
 
@@ -90,9 +89,54 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 为了拓宽生成综合定理以及证明的范围，作者同样在符号引擎中引入了另一个组件，其能够通过代数规则(AR, algebraic rules)推理出新的命题，其在Methods中描述。
 
-AR对于angle, ratio以及distance 
+AR对于角度、比例、以及距离追踪(chasing)都非常重要，而这些方法在许多奥林匹克竞赛等级的证明中都需要用到。作者在Extended Data Table 2中囊括了具体的AR例子。DD以及AR的组合方法，包括了他们两者的前向推理以及回溯算法，在作者的工作中是一种新的贡献，而且代表了几何领域进行符号推理的SOTA方法。
 
+# Generating proofs beyond symbolic deduction
 
+到目前为止，生成的证明仅仅包括了那些已经可以被高效的符号推理引擎DD+AR达到的推理步骤。然而，为了解决奥赛级别的问题，最关键的缺失的部分是生成新的证明项(terms)。
+
+在以上的算法中，那些证明项构成了独立于N(conclusion)的P(premises)的子集。换句话说，这些证明项是结论命题和结论对象之间的依赖差异(dependency difference)。
+
+> We move this difference from P to the proof so that a generative model that learns to generate the proof can learn to construct them, as illustrated in Fig. 3c.
+
+作者提出的方法将这种“差异”从P移动到证明，因而一个用于生成证明的生成模型可以学着去构造它们。
+
+这种证明步骤可以进行辅助构造，而这是符号推理引擎所不被设计去做的。在普遍的定理证明情景中，辅助构造是外生证明项生成的一个实例，这对于所有证明-搜索算法都是一个显著的挑战，因为它在搜索树中引入了无穷的分支点。
+
+> Previous methods to generate them are based on hand-crafted templates and domain-specific heuristics (8–12), and are, therefore, limited by a subset of human experiences expressible in hard-coded rules. Any neural solver trained on our synthetic data, on the other hand, learns to perform auxiliary constructions from scratch without human demonstrations.
+
+在几何定理证明中，辅助构造自从1959年该领域的开端(inception)以来，就是一个存在已久的研究课题。先前生成证明的方法，都是基于手工标注的模板(templates)，以及该领域中专用的启发式搜索方法，都因此“受限于”人类的那些可以用硬编码的规则所解释的经验。
+
+在作者的综合数据上进行训练的任何神经网络解题器(solver)，从另一个角度来说，都是学着去从零开始，不按照人类的指导，进行辅助构造。
+
+> Fig. 3 AlphaGeometry合成数据生成的过程
+> a. 作者首先在随机定理前提上采样出一个极大的集合
+> 
+> b. 作者使用符号推理引擎来获得一个推理结论。这个操作会返回一个命题的有向无环图。对于图中的每个顶点，作者对他们都会进行回溯，来找到顶点的必要前提以及以来推理的最小集合。例如图中所示的，“HA⊥BC”，回溯会返回绿色的子图。
+> 
+> c. 最小的前提以及相关的子图，构造出了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们对于HA和BC的构造是无关的。因此，他们能够被语言模型学习，作为辅助构造的方式。
+
+# Training a language model on synthetic data
+
+Transformer语言模型是一个强大的深度神经网络，能够学习通过“下一个token预测”的方法来生成文本序列，助力大量的生成式AI技术方面的进步。
+
+作者把(P,N,G(N))序列化成一个文本字符串，其结构是’\<premises\>\<conclusion\>\<proof\>'。通过在这样的符号序列上进行训练，一个语言模型能过高效地学习生成证明，条件就是定理前提以及结论。
+
+# Combining language modelling and symbolic data
+
+从更高的层面来说，证明搜索是一个循环，这个循环中语言模型和符号推理引擎交替运行(take turns to run)，如在Fig. 1b,c中所示。证明搜索在定理结论被找到，或者当循环达到最大迭代次数后停止。
+
+语言模型用问题命题字符串进行初始化(seed)，并在每一轮都生成一个额外的语句，以问题命题和之前的构造作为条件，描述一个新的辅助构造例如“构造点X，使得ABCX是一个平行四边形”。
+
+每次语言模型生成一个这样的构造，符号引擎就有新的输入进行工作，因此，它的推理结论(closure)就会扩大，可以潜在地达到结论。作者使用束搜索地方法来探索由语言模型生成的、最高k个构造。具体的并行证明搜索算法在Methods介绍。
+
+# Empirical evaluation
+
+一个奥赛级别用于几何的评价基准。
+
+现存的奥林匹克数学的评价指标并没有完全覆盖几何领域，因为其更加关注于在更一般目标的语言中的形式化语言，而形式化过程在表示几何上增加了巨大的困难(pose great challenges)。
+
+解决这些困难就需要深度的专家以及大量的研究投入，也超出了作者工作的范畴，因为那些研究更加关注于定理证明的方法论。由于这个原因，作者采用了自2000年以来的IMO竞赛中的几何问题，
 
 # Geometry theorem prover baselines
 ## Synthetic data generation rediscovers known theorems and beyond
@@ -102,16 +146,6 @@ AR对于angle, ratio以及distance
 他们生成的定理并没有发现IMO-AG-30中的任何定理，所以他们认为可能的几何定理空间，比他们发现的集合还要大得多。
 
 ## Generating proofs beyond symbolic deduction
-
-> We move this difference from P to the proof so that a generative model that learns to generate the proof can learn to construct them, as illustrated in Fig. 3c.
-
-……一个用于生成定理的生成模型可以学着去构造它们。
-
-> Previous methods to generate them are based on hand-crafted templates and domain-specific heuristics8–12, and are, therefore, limited by a subset of human experiences expressible in hard-coded rules. Any neural solver trained on our synthetic data, on the other hand, learns to perform auxiliary constructions from scratch without human demonstrations.
-
-之前的方法“受限于”一个人类经验的子集，这些是可解释的硬编码的规则。
-
-然而他们的方法是从零开始，不按照人类的指导，进行辅助构造。
 
 > As reported in Extended Data Fig. 6, we find that, using only 20% of the training data, AlphaGeometry still achieves state-of-the-art results with 21 problems solved.
 
