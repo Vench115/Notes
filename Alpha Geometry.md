@@ -4,7 +4,7 @@
 
 证明奥林匹克等级的数学定理，不可否认地代表了在人类等级自动推理方面的显著里程碑，由于它们的难度在大学前，世界上最有天赋的学生中享誉盛名。最近的机器学习的技术路径，然而并不适用于大多数的数学领域，因为这种方法需要将人类的证明步骤转化为机器可验证的格式，而这个过程代价非常高。这个问题在几何领域甚至更加严重，因为几何问题特殊的转换要求所带来的挑战。该问题所带来的结果就是，训练数据的严重缺失。
 
-> We propose AlphaGeometry, a theorem prover for Euclidean plane geometry that sidesteps the need for human demonstrations by synthesizing millions of theorems and proofs across different levels of complexity.
+>We propose AlphaGeometry, a theorem prover for Euclidean plane geometry that sidesteps the need for human demonstrations by synthesizing millions of theorems and proofs across different levels of complexity.
 
 所以，DeepMind团队推出了AlphaGeometry，一个用于欧式平面几何的定理证明器(prover)，它能够规避提供人类证明演示的需求。方法简单来说，是合成成百万上千万条，来自于不同难度层级的定理和证明。
 
@@ -46,20 +46,20 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 作者的几何定理求解器AlphaGeometry，如图1中所示，能够生成人类可读的证明，极大地超越了先前SOTA的几何定理证明机器程序，并且在一个由30道翻译自IMO的经典几何问题组成的测试集上，接近了一位IMO金牌选手的平均表现。
 
-> fig. 1，作者提出的神经符号AlphaGeometry以及它如何解决一个简单的问题和IMO 2015的问题3的总览。
+>fig. 1，作者提出的神经符号AlphaGeometry以及它如何解决一个简单的问题和IMO 2015的问题3的总览。
 > 
-> 最顶上的一行展现了AlphaGeometry如何解决一个简单的问题。
-> a. 一个简单的例子以及它的图表。
+>最顶上的一行展现了AlphaGeometry如何解决一个简单的问题。
+>a. 一个简单的例子以及它的图表。
 > 
-> b. AlphaGeometry通过运行符号推理引擎初始化它的证明搜索。推理引擎不知疲倦地从定理前提中推理出新的语句(statements)，直到定理得证或者新的语句被耗尽。
+>b. AlphaGeometry通过运行符号推理引擎初始化它的证明搜索。推理引擎不知疲倦地从定理前提中推理出新的语句(statements)，直到定理得证或者新的语句被耗尽。
 > 
-> c. 因为符号引擎不能找到一个证明，语言模型构造了一个辅助点，在符号引擎退出之前发展新的证明状态。这种循环一直持续，直到解法被找到。
+>c. 因为符号引擎不能找到一个证明，语言模型构造了一个辅助点，在符号引擎退出之前发展新的证明状态。这种循环一直持续，直到解法被找到。
 > 
-> d. 对于简单的例子来说，循环在第一个辅助构造“D为BC中点”后终止。证明包含两个其他步骤，这两个步骤都利用了中点的性质：”BD=DC“并且”B,D,C是共线的“，步骤用蓝色高亮指出。底下一行展现了AlphaGeometry是怎样解决IMO 2015 P3问题的。
+>d. 对于简单的例子来说，循环在第一个辅助构造“D为BC中点”后终止。证明包含两个其他步骤，这两个步骤都利用了中点的性质：”BD=DC“并且”B,D,C是共线的“，步骤用蓝色高亮指出。底下一行展现了AlphaGeometry是怎样解决IMO 2015 P3问题的。
 > 
-> e. IMO 2015 P3问题声明和图表
+>e. IMO 2015 P3问题声明和图表
 > 
-> f. IMO 2015 P3由三个辅助点构造。在两种解法中，作者让语言模型输出交错于符号引擎的输出，来反映出他们的执行顺序。此处需要指出图f中IMO 2015 P3的证明为了便于解释，是被大量缩减和编辑过的。它的完整版本在辅助材料中。
+>f. IMO 2015 P3由三个辅助点构造。在两种解法中，作者让语言模型输出交错于符号引擎的输出，来反映出他们的执行顺序。此处需要指出图f中IMO 2015 P3的证明为了便于解释，是被大量缩减和编辑过的。它的完整版本在辅助材料中。
 
 # Synthetic theorems and proofs generation
 
@@ -75,13 +75,13 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 这种方法允许一个回溯过程从任意一个顶点N开始递归地运行，最后返回它的依赖性子图G(N)，该子图的根节点是N，叶子顶点则是一个已采样前提的子集。把这个子集记为P，作者就得到了一个合成训练例子：(premises, conclusion, proof) = (P, N, G(N))。
 
-> fig. 3 AlphaGeometry 合成数据生成过程
+>fig. 3 AlphaGeometry 合成数据生成过程
 > 
-> a. 作者首先从一个随机的定理前提中采样一个巨大的集合。
+>a. 作者首先从一个随机的定理前提中采样一个巨大的集合。
 > 
-> b. 作者利用符号推理引擎来获得一个推理结论(deduction closure)，这能够返回一个命题的有向无环图。对于图中的每个顶点，作者再采用回溯来找到必要前提以及依赖(dependency deductions)的最小子集。例如，对于最右边的顶点”HA⊥BC“，回溯过程会返回绿色的子图。
+>b. 作者利用符号推理引擎来获得一个推理结论(deduction closure)，这能够返回一个命题的有向无环图。对于图中的每个顶点，作者再采用回溯来找到必要前提以及依赖(dependency deductions)的最小子集。例如，对于最右边的顶点”HA⊥BC“，回溯过程会返回绿色的子图。
 > 
-> c. 最小的前提以及相关的子图构成了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们与HA和BC的构造无关；因此，这些例子作为辅助构造被语言模型学习。
+>c. 最小的前提以及相关的子图构成了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们与HA和BC的构造无关；因此，这些例子作为辅助构造被语言模型学习。
 
 ## 3
 
@@ -97,38 +97,38 @@ AR对于角度、比例、以及距离追踪(chasing)都非常重要，而这些
 
 在以上的算法中，那些证明项构成了独立于N(conclusion)的P(premises)的子集。换句话说，这些证明项是结论命题和结论对象之间的依赖差异(dependency difference)。
 
-> We move this difference from P to the proof so that a generative model that learns to generate the proof can learn to construct them, as illustrated in Fig. 3c.
+>We move this difference from P to the proof so that a generative model that learns to generate the proof can learn to construct them, as illustrated in Fig. 3c.
 
 作者提出的方法将这种“差异”从P移动到证明，因而一个用于生成证明的生成模型可以学着去构造它们。
 
 这种证明步骤可以进行辅助构造，而这是符号推理引擎所不被设计去做的。在普遍的定理证明情景中，辅助构造是外生证明项生成的一个实例，这对于所有证明-搜索算法都是一个显著的挑战，因为它在搜索树中引入了无穷的分支点。
 
-> Previous methods to generate them are based on hand-crafted templates and domain-specific heuristics (8–12), and are, therefore, limited by a subset of human experiences expressible in hard-coded rules. Any neural solver trained on our synthetic data, on the other hand, learns to perform auxiliary constructions from scratch without human demonstrations.
+>Previous methods to generate them are based on hand-crafted templates and domain-specific heuristics (8–12), and are, therefore, limited by a subset of human experiences expressible in hard-coded rules. Any neural solver trained on our synthetic data, on the other hand, learns to perform auxiliary constructions from scratch without human demonstrations.
 
 在几何定理证明中，辅助构造自从1959年该领域的开端(inception)以来，就是一个存在已久的研究课题。先前生成证明的方法，都是基于手工标注的模板(templates)，以及该领域中专用的启发式搜索方法，都因此“受限于”人类的那些可以用硬编码的规则所解释的经验。
 
 在作者的综合数据上进行训练的任何神经网络解题器(solver)，从另一个角度来说，都是学着去从零开始，不按照人类的指导，进行辅助构造。
 
-> Fig. 3 AlphaGeometry合成数据生成的过程
-> a. 作者首先在随机定理前提上采样出一个极大的集合
+>Fig. 3 AlphaGeometry合成数据生成的过程
+>a. 作者首先在随机定理前提上采样出一个极大的集合
 > 
-> b. 作者使用符号推理引擎来获得一个推理结论。这个操作会返回一个命题的有向无环图。对于图中的每个顶点，作者对他们都会进行回溯，来找到顶点的必要前提以及以来推理的最小集合。例如图中所示的，“HA⊥BC”，回溯会返回绿色的子图。
+>b. 作者使用符号推理引擎来获得一个推理结论。这个操作会返回一个命题的有向无环图。对于图中的每个顶点，作者对他们都会进行回溯，来找到顶点的必要前提以及以来推理的最小集合。例如图中所示的，“HA⊥BC”，回溯会返回绿色的子图。
 > 
-> c. 最小的前提以及相关的子图，构造出了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们对于HA和BC的构造是无关的。因此，他们能够被语言模型学习，作为辅助构造的方式。
+>c. 最小的前提以及相关的子图，构造出了一个综合的问题及其解答。在最下面的例子中，点E和D参与了证明，尽管他们对于HA和BC的构造是无关的。因此，他们能够被语言模型学习，作为辅助构造的方式。
 
 # Training a language model on synthetic data
 
-Transformer语言模型是一个强大的深度神经网络，能够学习通过“下一个token预测”的方法来生成文本序列，助力大量的生成式AI技术方面的进步。
+Transformer语言模型是一个强大的深度神经网络，能够学习且通过“下一个token预测”的方法来生成文本序列，助力大量的生成式AI技术方面的进步。
 
 作者把(P,N,G(N))序列化成一个文本字符串，其结构是’\<premises\>\<conclusion\>\<proof\>'。通过在这样的符号序列上进行训练，一个语言模型能过高效地学习生成证明，条件就是定理前提以及结论。
 
 # Combining language modelling and symbolic data
 
-从更高的层面来说，证明搜索是一个循环，这个循环中语言模型和符号推理引擎交替运行(take turns to run)，如在Fig. 1b,c中所示。证明搜索在定理结论被找到，或者当循环达到最大迭代次数后停止。
+从更高的层面来说，证明搜索是一个循环，这个循环中语言模型和符号推理引擎交替运行(take turns to run)，如在Fig. 1 b,c中所示。证明搜索在定理结论被找到，或者循环达到最大迭代次数后停止。
 
-语言模型用问题命题字符串进行初始化(seed)，并在每一轮都生成一个额外的语句，以问题命题和之前的构造作为条件，描述一个新的辅助构造例如“构造点X，使得ABCX是一个平行四边形”。
+语言模型用问题命题字符串进行初始化(seeded)，并在每一轮都生成一个额外的语句，以问题命题和之前的构造作为条件，描述一个新的辅助构造例如“构造点X，使得ABCX是一个平行四边形”。
 
-每次语言模型生成一个这样的构造，符号引擎就有新的输入进行工作，因此，它的推理结论(closure)就会扩大，可以潜在地达到结论。作者使用束搜索地方法来探索由语言模型生成的、最高k个构造。具体的并行证明搜索算法在Methods介绍。
+每次语言模型生成一个这样的构造，作为新的输入给予符号引擎，因此，它的推理结论(closure)就会扩大，潜在地能够达到结论。作者使用集束搜索的方法来探索由语言模型生成的、最高k个构造。具体的并行证明搜索算法在Methods介绍。
 
 # Empirical evaluation
 
@@ -136,28 +136,103 @@ Transformer语言模型是一个强大的深度神经网络，能够学习通过
 
 现存的奥林匹克数学的评价指标并没有完全覆盖几何领域，因为其更加关注于在更一般目标的语言中的形式化语言，而形式化过程在表示几何上增加了巨大的困难(pose great challenges)。
 
-解决这些困难就需要深度的专家以及大量的研究投入，也超出了作者工作的范畴，因为那些研究更加关注于定理证明的方法论。由于这个原因，作者采用了自2000年以来的IMO竞赛中的几何问题，
+解决这些困难就需要深度的专家以及大量的研究投入，也超出了作者工作的范畴，因为那些研究更加关注于定理证明的方法论。由于这个原因，作者采用了自2000年以来的IMO竞赛中的几何问题，并将其放入一个更细分的、专业的环境，用于传统的用于交互式的图证明辅助，此处也在Methods中有所描述。
+
+在所有的非组合的、几何相关的问题，75%能够被(形式化)表示，能够得到一个30道经典几何的问题。例如，几何不等式和组合几何，是不能被翻译的，因为他们的形式化相比于经典几何是有明显的不同的。
+
+作者在Supplementary Information中包括了声明和翻译30道题的完整列表。最终的测试集命名为IMO-AG-30，补充材料中强调了它的来源、翻译的方法、以及它最近的大小。
 
 # Geometry theorem prover baselines
+
+## 1
+
+几何定理求解器在传统的观点中一般分为两类。
+
+第一类是计算机代数方法，他们将几何命题视为点坐标的多项式方程。证明是通过大型多项式的特殊变换来实现的。Grobner基和吴法是这类方法中比较有代表性的，因为其理论上成功的保证，能够决定IMO-AG-30中所有的真值，尽管不能生成人类可读的证明。
+
+因为这些方法通常具有巨大的时间和存储复杂度，尤其是当处理IMO等级的问题时，作者认为，只要能够利用任意一个已有的实现，并且能够在48小时内解决的问题都能被视为成功，这些结果作者也有所汇报。
+
+## 2
+
+AlphaGeometry是属于第二类方法的求解器，通常被描述为搜索、或者公理的，有时是“综合的”方法。这些方法将定理证明的问题，视作一个逐步搜索的问题，运用的是一个几何的公理集合。拜此所赐，他们通常会返回高度可解释的证明，对于人类读者是非常易读的。
+
+在这类方法中的基准方法中(baselines)普遍包括符号引擎，引擎中也通常有人类设计的启发式搜索方法。例如，Chou等人提供了18种启发式搜索方法，例如“如果OA⊥OB而且OA=OB，构造C在OA射线的反方向上，使得OC=OA”，除此之外还有75种用于符号引擎的推理规则。
+
+大语言模型例如GPT-4也能够被视作是这一类的方法。大语言模型已经展现了其在各种各样的推理任务上，超凡的推理能力。
+
+>When producing full natural-language proofs on IMO-AG-30, however, GPT-4 has a success rate of 0% , ......
+
+当尝试在IMO-AG-30上生成所有自然语言的证明时，然而，GPT-4仍然只有0%的成功率，在整个输出的过程中它通常会犯语法或语义错误。这表明了模型本身对于几何知识，以及问题命题本身的了解甚少。
+
+需要指出的是，GPT-4在IMO问题上的性能也会被它训练数据中的公共解答所污染。而一个性能更好的GPT-4也因此仍然不能与其他求解器所兼容。
+
+总的来说，搜索方法在他们的证明性能上没有理论上的保证，并且也被广泛认为是弱于计算机代数方法。
+
 ## Synthetic data generation rediscovers known theorems and beyond
 
-> We performed deduplication as described in Methods, resulting in more than 100 millions unique theorems and proofs, and did not find any IMO-AG-30 theorems, showing that the space of possible geometry theorems is still much larger than our discovered set.
+作者发现他们的综合数据生成能够重新发现(rediscover)一些相当复杂的(fairly complex)定理，包括一些几何学界所了解的辅助定理(lemmas)。如Fig. 4中所示，尽管是从随机采样的定理前提开始。
 
-他们生成的定理并没有发现IMO-AG-30中的任何定理，所以他们认为可能的几何定理空间，比他们发现的集合还要大得多。
+这可以归因于利用了符合的操作，如在Extended Data Table 1中所描述的，例如“作一个质心(centroid)”或者“作一个旁心(excentre)”，这偶然地采样了众所周知地定理前提地超集，在作者大规模的探索环境，如其在Methods上所描述的。
 
-## Generating proofs beyond symbolic deduction
+为了学习了解合成证明的复杂性，Fig. 4直观地展现了综合证明长度的直方图，并列展示了在奥赛问题的测试集上发现的证明长度。
 
-> As reported in Extended Data Fig. 6, we find that, using only 20% of the training data, AlphaGeometry still achieves state-of-the-art results with 21 problems solved.
+>Although the synthetic proof lengths are skewed towards shorter proofs, a small number of them still have lengths up to 30% longer than the hardest problem in the IMO test set.
 
-仅仅使用20%的训练数据，就已经可以解题21道。
+尽管综合证明长度已经朝着更短的证明被歪曲(skewed)了，他们之中少部分的证明长度，仍然比IMO测试集中最难的问题要长30%。
 
-> Similarly, using less than 2% of the search budget (beam size of 8 versus 512) during test time, AlphaGeometry can still solve 21 problems.
+作者也发现，由这个过程所发现的综合定理，并没有受限于人类的“审美偏见(aesthetic biases)”，例如对称，因此也就能够覆盖更大的、欧氏几何中的情况集合。
 
-仅仅使用2%的搜索成本，仍然可以解决21%的问题。
+>We performed deduplication as described in Methods, resulting in more than 100 millions unique theorems and proofs, and did not find any IMO-AG-30 theorems, showing that the space of possible geometry theorems is still much larger than our discovered set.
 
-> Notably, we demonstrated through AlphaGeometry a neuro-symbolic approach for theorem proving by means of large-scale exploration from scratch, sidestepping the need for human-annotated proof examples and human-curated problem statements.
+作者进行数据去重，结果产生了超过一亿条独立的定理和证明，而且作者所生成的定理并没有发现IMO-AG-30中的任何定理，所以他们认为可能的几何定理空间，比他们发现的集合还要大得多。crazy
+
+## Language model pretraining and fine-tuning
+
+作者首先在所有的一亿条综合生成的定理上训练了语言模型，包括那些纯符号推理的定理。然后，作者在一个证明的子集上进行微调，这些子集的证明需要辅助构造，并且大概占了总体训练数据的9%，也就是九百万条证明，为了更好地在整个证明搜索过程中更好地关注它被分配的任务。
+
+# Proving results on IMO-AG-30
+
+## 1
+
+十个不同的解题器在IMO-AG-30基准上的性能评估，在Table 1中展示，其中八个，包括AlphaGeometry，是基于搜索的方法。
+
+此外，用提示词让GPT-4以自然语言生成完整的证明，带有多轮的反思和修改，作者也结合了GPT-4和DD+AR作为另一个基准来增强它的推理准确度。为了达到这个目标，作者使用非常详细的指令以及少样本(few-shot)例子加入到提示词中，来帮助GPT-4成功地与DD+AR交互，只要能以正确的语法提供辅助构造。涉及GPT-4的基准的提示词细节包括在Supplementary Information中。
+
+## 2
+
+AlphaGeometry达到了最佳的结果，总共解决25道问题。先前最好的方法(吴法)解决了十题，然而最强的基准(DD+AR+human-designed heuristics)解决了18道题，因为运用了这篇工作中所开发的代数推理引擎，以及由Chou等设计的人类启发式搜索方法。
+
+为了匹配AlphaGeometry的计算测试时间，这个最强的基准利用了250个并行的核心(workers)运行了1.5小时，每一个都尝试不同的、由人类设计的并行启发式辅助构造的集合，直到搜索成功或超时。
+
+其他如吴法的基准，或者全角法(full-angle method)并没有被并行计算资源所影响，因为他们实现的是固定的、逐步的算法，直到终止。
+
+## 3
+
+当度量了由基本符号推理引擎(DD)所带来的效果提升，作者发现融合代数推理，能够多解决7道问题而来到14道(DD+AR)，然而语言模型的辅助构造惊人地增加了另外11道解决地问题，结果来到了总共25道。
+
+>As reported in Extended Data Fig. 6, we find that, using only 20% of the training data, AlphaGeometry still achieves state-of-the-art results with 21 problems solved.
+
+如Extended Data Fig. 6中所报告的，作者发现，仅仅使用20%的训练数据，AlphaGeometry仍然可以达到最好的结果，解题21道。
+
+>Similarly, using less than 2% of the search budget (beam size of 8 versus 512) during test time, AlphaGeometry can still solve 21 problems.
+
+同样地，在测试时间中仅仅使用 少于 2%的搜索成本(集束搜索8 vs 512)，AlphaGeometry仍然可以解决21道题。
+
+在一个更大、更多样的、包含231道集合问题的测试集，其中覆盖了课本习题、地区奥赛、以及著名定理，作者发现Table 1中的基准仍然保持了同样的性能等级(rankings)。其中，AlphaGeometry解决了几乎所有的问题(98.7%)，而吴法解决了75%，同时DD+AR+human-designed heuristics解决了92.2%，如Extended Data Fig. 6b所示。
+
+## 4
+
+>Notably, we demonstrated through AlphaGeometry a neuro-symbolic approach for theorem proving by means of large-scale exploration from scratch, sidestepping the need for human-annotated proof examples and human-curated problem statements.
+
+值得注意的是，AG解决了2000和2015同年中的两题，这被广泛认为是普通人类竞赛者在IMO中的分水岭。更进一步的，AlphaGeometry的回溯过程找到了一个，在IMO 2004 P1中未被使用的
 
 一个用于定理证明的神经-符号学派方法，通过大规模地从零开始探索，规避人类标注证明例子，规避人工构造问题的声明结构。
+
+
+# Generating proofs beyond symbolic deduction
+
+
+
 
 > Our method to generate and train language models on purely synthetic data provides a general guiding framework for mathematical domains that are facing the same data-scarcity problem.
 
