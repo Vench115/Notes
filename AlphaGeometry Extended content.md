@@ -63,9 +63,26 @@ DD(ref. 17)通过在一些有限的推理规则中解释代数推理来解决这
 举个例子来说，作者有 "$a-b=b-c, d-c=a-d, b-c=c-e$" 作为输入的等式，使用高斯消元过程，就可以返回如下的结果。
 
 $$
-begin matrix
+\begin{pmatrix}
+ a & b & c & d & e \\
+ 1 & -2 & 1 & 0 & 0 \\
+ -1 & 0 & -1 & 2 & 0 \\
+ 0 & 1 & -2 & 0 & 1
+\end{pmatrix}
+\rightarrow^{GE}
+\begin{pmatrix}
+ a & b & c & d & e \\
+ 1 & 0 & 0 & -1.5 & 0.5 \\
+ 0 & 1 & 0 & -1 & 0 \\
+ 0 & 0 & 1 & -0.5 & -0.5
+\end{pmatrix}
+\Rightarrow
+\left\{\begin{matrix}
+ a=1.5d - 0.5e \\
+ b=d \\
+ c=0.5d + 0.5e
+\end{matrix}\right.
 $$
-
 
 ## 4
 
@@ -81,7 +98,7 @@ $$
 
 这种图的数据结构将它自己融入(bakes itself)进了一些推理规则中，在DD中使用的那些几何规则列表中，这些推理规则已经被明确地规定了(explicitly stated)。因此，这些从原始列表中获得的推理规则，并没有被用在探索中的任何地方，而是隐含地使用了，而且在有需要时，也就是当最终的证明被序列化成文本时，就能够被明确地转译(spelled out)。
 
-## Traceback to find minimal proofs
+### Traceback to find minimal proofs
 
 回溯来找到最少的证明序列(minimal proofs)。
 
@@ -93,27 +110,27 @@ $$
 
 为了几何规则推理的回溯
 
-为此，作者记录了等式转移图(equality transitivity graph)。例如，如果 “$a=b, b=c, c=d$” 而且 “$a=d$” 被推理出来了，结果就是顶点a,b,c,d被连接到了同样的 “等式顶点(equality node)” e上，作者就在e中保持一个图，图上有边 \[(a,b), (b,c), (c,d), (a,d)\] 。这使得回溯算法可以进行广度优先搜索，来找到a,b,c,d中任意两对变量之间矩阵转换的最短路径。
+为此，作者记录了等式转移图(equality transitivity graph)。例如，如果 “$a=b, b=c, c=d$” 而且 “$a=d$” 被推理出来了，结果就是顶点 $a,b,c,d$ 被连接到了同样的 “等式顶点(equality node)” e上，作者就在e中保持一个图，图上有边 \[(a,b), (b,c), (c,d), (a,d)\] 。这使得回溯算法可以进行广度优先搜索，来找到 $a,b,c,d$ 中任意两对变量之间矩阵转换的最短路径。
 
-然而，对于共线性和共圆性，这种表示会更加的复杂。在这些例子中，超图 $G(V,E)$ 带有3条边或4条边被用作等式传递矩阵。现在回溯等价于找到一个最小生成树(minimum spanning tree)，也就是下述公式中的MST，顶点(三个共线顶点或四个共圆顶点)的目标集合，其中的权重是图的超边 $e^{'}$ 的并集的基(cardinalitya)：
+然而，对于共线性和共圆性，这种表示会更加的复杂。在这些例子中，超图 $G(V,E)$ 带有3-边或4-边被用作等式的转移矩阵。现在，回溯等价于为目标顶点(三个共线顶点或四个共圆顶点)集合 $S$ ，找到一个最小生成树(minimum spanning tree)，也就是下述公式中的MST，顶点的权重是图的超边 $e^{'}$ 的并集的基(cardinality)：
 
 $$
-MST(S) = \min_{T \subset E} |{ \cup_{e^{'} \subset T w(e^{'}) } }|
+MST(S) = \min_{T \subset E} |{ \cup_{e^{'} \subset T } w(e^{'}) }|
 \space s.t. S \subset T
 $$
 
-这样的优化是一个NP-hard问题，因为它是顶点覆盖的决策版本的缩减。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
+上述的优化是一个NP-hard问题，因为它是顶点覆盖问题的决策版本的一种简化(a reduction from the decision version of vertex cover)。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
 
 ## Traceback for algebraic deduction
 
-通过高斯消元法的回溯可以被看作是等价于一个混合整数(mixed integer)的线性规划问题。给定输入等式的稀疏矩阵A，这个矩阵由前述的内容所构造的，还有一个带有系数向量 $b \in R^N$ 的目标等式，作者通过定义非负整数决策向量 $x,y \in Z^M$ 来决定对于 $b$ 的前提的最小集合，并且解决下述的混合整数线性规划问题：
+通过高斯消元法的回溯，可以被看作等价于一个混合整数(mixed integer)的线性规划问题。给定输入等式的稀疏矩阵 $A$ ，这个矩阵由前述的内容所构造的，还有一个带有系数向量 $b \in R^N$ 的目标等式。作者通过定义非负整数决策向量 $x,y \in Z^M$ 来决定对于 $b$ 的前提的最小集合，并且解决下述的混合整数线性规划问题：
 
 $$
 x,y = \min_{x,y} \sum_i (x_i+y_i)
 \space s.t. A^T (x-y) = b
 $$
 
-对于等式的直接父节点的最小集合可以被b表示，就是第i个等式 (A中的第i行)，相关的决策变量 $(x_i - y_i)$ 是非0的。
+对于等式的直接父节点的最小集合可以被b表示，就是第i个等式 (A中的第i行)，相关的决策变量 $(x_i - y_i)$ 是非零的。
 
 ## Integrating DD and AR
 
@@ -123,11 +140,11 @@ DD和AR被交替(alternately)用于扩展他们的联合推理闭包。DD的输�
 
 例如，如果DD推理出了“AB平行于CD”，AB和CD的斜率在AR的稀疏矩阵A中，被更新成相等的变量(系数矩阵A定义在Algebraic reasonning部分)。
 
-也就是说，与斜率AB相关的列会被置为1，与斜率CD相关的则是-1，这一行会被加入系数矩阵A。高斯消元以及混合整数线性规划在AR执行后会再次运行，生成新的等式作为下一次DD迭代的输入。
+也就是说，与斜率AB相关的列会被置为1，与斜率CD相关的则是-1，这一行会被加入系数矩阵A。高斯消元以及混合整数线性规划在AR执行后会再次运行，生成新的等式作为下一次DD迭代的输入。这个循环会一直重复，直到联合推理闭包停止扩张。
 
 >Both DD and AR are deterministic processes that only depend on the theorem premises, therefore they do not require any design choices in their implementation.
 
-这个循环一直重复，直到联合推理闭包停止扩张。DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提，因此他们在实现上不需要任何的设计决策。
+DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提，因此他们在实现上不需要任何的决策设计。
 
 ## Proof pruning
 
@@ -135,10 +152,134 @@ DD和AR被交替(alternately)用于扩展他们的联合推理闭包。DD的输�
 
 尽管任何顶点的直接祖先顶点的集合是最小的了，但这并不能保证完全回溯的依赖子图 $G(N)$ 和必要的前提P是最小的。
 
-这里作者将最小化定义成一个性质(property)，即 $G(N)$ 和P不能被进一步地剪枝，且不损失任何结论的可达性(conclusion reachability)。
+这里作者将极小性(minimality)定义成一个性质(property)，即 $G(N)$ 和 $P$ 不能在不损失任何结论的可达性(conclusion reachability)的情况下，被进一步剪枝。
 
-如果不进行最小化，作者可以得到许多带有无意义的(vacuous)辅助构造的综合证明步骤，且与实际证明关系不大，也可以被完全弃用(discarded)。
+在不进行最小化的情况下，作者可以得到许多带有无意义的(vacuous)辅助构造的综合证明步骤，这些步骤与实际证明关系不大，也可以被完全弃用(discarded)。
 
-为了解决这个问题，作者使用了彻底地试错(trial and error)，丢弃辅助点地每一个子集，并在前提的更小子集上重新运行DD+AR，来验证目标的可达性。最后，算法将整个尝试中能够获得的最小证明返回。这个证明-剪枝步骤是同时通过综合数据生成，以及在测试时间中每一个成功的证明搜索。
+为了解决这个问题，作者使用了彻底的试错方法(exhaustive trial and error)，丢弃辅助点的每一个子集，并在更小的前提子集上重新运行DD+AR，来验证目标的可达性。最后，算法将整个尝试中能够获得的最小证明返回。这个证明-剪枝步骤是通过综合数据生成，以及在测试时间中每一个成功的证明搜索中同时完成的。
 
-## Parallelized data generation and 
+## Parallelized data generation and deduplication
+
+并行数据生成以及数据去重
+
+作者在一个拥有大量并行CPU的硬件上，运行了子集的合成-数据-生成过程，每个都用一个不同的随即种子进行初始化。在100,000个CPU核心上运行这个程序72小时之后，作者得到了大约5亿(500 million)个合成证明例子。
+
+作者重新格式化了证明命题，得到了它们最简洁的(canonical)形式，以避免它对于例子本身以及对于测试集的，浅层数据去重(shallow deduplication)。
+
+最终，作者获得了1亿(100 million)条独立的(unique)定理-证明例子。其中，一共有九百万个例子包含了至少一个辅助构造。作者在合成的数据中并没有发现IMO-AG-30中的题目。
+
+JGEX中收录的一个几何问题集中，包含的大多是中等难度的题目以及众所周知的定理，而作者在这个问题集上发现了接近20个问题也在合成数据集中。这说明训练数据覆盖了相当数量的几何领域的基本常识，但是更加复杂的(sophisticated)定理的空间仍然更加巨大。
+
+## Language model architecture and training
+
+语言模型架构和训练(细节)
+
+作者使用Meliad library来进行transformer训练，而且只用它的基本设定。Transformer有12层，嵌入的维度(embedding dimension)是1024维，使用了八头注意力以及一个4096维、使用ReLU激活函数的相互注意力(inter-attention)的密集层。
+
+总之，除了模型输入和输出端的嵌入层，Transformer有1.51亿(151 million)个参数。作者定制的分词器(tokenizer)使用 "word" 模型，使用SentencePiece训练的，同时它的词汇表有757个单词。
+
+作者限制了最大的上下文长度是1024个token，并且使用T5风格的相对位置编码(relative position embedding)。序列封装(Sequence packing)也被用到了，因为作者用的序列中超过90%都是低于200个长度的。
+
+在训练的过程中，在attention前以及dense层后，dropout概率被设置成5%。一个4x4片的TPUv3由于其硬件加速器的特性而被使用。对于预训练，作者用每个核心16个batch-size来训练transformer，并使用了cosine的学习率曲线，在1亿步之内从0.01下降到0.001。
+
+对于微调，作者在另外一百万步之内保持了最终的学习率0.001。对那些不使用预训练的方法，作者将学习率在一百万步之内从0.01下降到0.001。作者没有使用任何的超参数优化(hyperparameter tuning)。这些超参数的值要么选定为一个非常大的整数值(round number)比如训练的部署，或者由Meliad代码库中默认提供。
+
+## Parallelized proof search
+
+### 1
+
+因为语言模型解码过程会返回k个不同的序列，来描述k个备选的辅助构造，作者在这k个选择中进行集束搜索(beam search)，并且用的是每个技术的得分作为它的值函数。
+
+这个设定在集束间是高度可并行的，使得存在并行计算资源时可以有极大的速度提升。在作者的实验中，他们使用k=512的集束搜索，最大的迭代数是16，而且每个顶点的分支系数(branching factor)是解码的batch size，也就是32。这在作者的transformer大小之下，是最大的能够适配GPU V100的显存的推理时间batch size。
+
+如果将这些因子扩大(scale up)，来检查更大比例的搜索空间，”有可能“进一步改善AlphaGeometry的结果。
+
+### 2
+
+对于每个问题，作者使用了四个GPU核心的集群，其中每个都存储一份transformer语言模型的副本，为的是在不同的集束中拆分工作载荷，同时也有一个10000CPU核心的集群来存储符号解题器，分担全部30道题目上的全部集束。
+
+以这种方法，一个较早结束的问题可以贡献出它的计算资源，给那些运行时间更长的问题。作者记录了符号解题器在每一个问题上运行时间，在设计上来说，这个时间应该在所有集束上大致保持一致。
+
+作者利用了这点，以及语言模型的解码速度来推断每个问题所需要的并行性(parallelism)，分别来说，这些并行性就是在Extended Data Fig. 1中展现了不同时间限制下的模型，在IMO上所需要的数量。
+
+## The effect of data and search
+
+数据和搜索的影响
+
+作者用更小比例的原始数据集来训练AlphaGeometry，20%、40%、60%和80%，从中发现，甚至是只要%20的训练数据，AG仍然能解决21道问题，也超过了最强的求解18题的基准线(DD+AR+human-designed heuristics)，具体在Extended Data Fig. 6c,d 中展示。
+
+作者还发现，集束的大小设置为8，也就是64倍削减于原始集束大小512，AG仍然解决了21道题。同样地，如果将搜索深度从16削减到只有2，而保持512的集束大小的话，也能得到同样解决21题的结果。
+
+## Evaluation on a larger test set
+
+在更大的测试集上进行评估
+
+作者在一个更大的、包括231道几何问题的测试集上，评估了AG和其他肌醇方法，具体在ref. 17中展现。这个集合覆盖了IMO竞赛以外的、范围更广的来源：比如课本的习题和练习题、地区奥赛、以及著名的几何定理；一些甚至步经典的IMO题目还要复杂，例如(密克)五点共圆定理、莫利定理、或者Sawayama and Thébault's theorem。
+
+结果记录在Extended Data Fig. 6b中。
+
+不同方法的总体排名与在Table 1中的结果保持一致，也就是AG解决了几乎所有的问题(98.7%)。最强的基准 DD+AR+human-designed heuristics 解决了92.2%，然而先前最好的方法解决了75%。
+
+### AlphaGeometry framework and applicability to other domains
+
+#### 1
+
+>The strength of AlphaGeometry’s neuro-symbolic set-up lies in its ability to generate auxiliary constructions, which is an important ingredient across many mathematical domains.
+
+AG框架及其对于其他领域的适用性。AG的神经-符号设定的强大之处，在于其生成辅助构造的能力，这在很多其他数学领域都是非常重要的要素。
+
+在Extended Data Table 3中，作者在其他四个数学领域中给出了例子，其中也说明辅助构造对于解题是非常关键的。在Extended Data Table 4中，作者给出了有关几何证明和不等式证明的逐行对比，题目是IMO 1964 P2，其中强调了他们都能适配相同的框架。
+
+#### 2
+
+作者的工作展现了语言模型是可以从合成数据中，学着去提出(come up with)辅助构造的，其中问题的声明和辅助构造一起都是随机生成的，然后被回溯算法分割(separated)，以分辨依赖性差异(dependency difference)。具体地，AG这个框架需要以下的要素：
+
+1. 领域中对象和定义的实现(implementation)
+2. 一个随机前提采样器(sampler)
+3. 工作在实现(1)中的符号引擎
+4. 给予符号引擎的一个回溯步骤(procedure)
+
+#### 3
+
+利用这四个要素和在正文描述的算法，我们就可以生成针对任何领域的合成数据了。正如在作者论文中所展现的，构建每一块要素都有着工程上(engineering)不平凡的(non-trivial)挑战。
+
+例如，最新的组合数学的形式化就处于非常初期的阶段(nascent)，这也就在要素1、2上带来了挑战。同时，构建强大的、针对不同领域的符号引擎需要深度的领域专业知识，这就在要素3、4要素上带来了巨大的挑战。作者认为可以将这种框架应用于更广阔的领域，作为未来的工作，而且他们也期待能够解决这些挑战的更深入的创新。
+
+## Transformer in theorem proving
+
+定理证明中的Transformer
+
+自动定理证明的研究已经有非常长的历史了，可以追溯道20世纪50年代，
+在21世纪10年代，深度学习成长成了一个对于自动定理证明来说全新的、非常强大的工具，展现了在前提选择(premise selection)和证明辅助指引(proof guidance)、还有SAT解题上的巨大成功。
+
+从另一个角度来说，transformer在大量不同的任务上都展现了出色(outstanding)的推理能力。第一个成功将transformer语言模型应用于定理证明的是GPT-f。其后来的扩展更进一步地沿着该路线开发，第一次使得机器可以解决一些奥赛等级地题目。
+
+在证明-搜索算法以及在线训练上的创新，也改善了基于transformer的方法，在代数和数论上也解决了总共十道IMO题目。然而，这些进步，在一个大量的人类证明例子、以及由人类设计和组织(curated)的独立的题目命题是可以预测的。
+
+### Geometry theorem proving
+
+几何定理证明，在一个完全不同的(separate)空间中进化(evolve)。它的研究(literature)被分成了两个分支，一个是计算机代数方法，一个是搜索方法。
+
+前一种被广泛认为已经解决，因为吴法的引入，这种方法理论上可以决定任何一个等式类型的几何声明的真值(true value)，其中还含有先前工作中提出的代数工具。尽管计算机代数由很强的理论保证，但是它的性能在实际情况中会有所限制，由于方法所需要的大量的时空复杂度。更进一步地，计算机代数地方法论并不能引起AI研究的兴趣，AI研究反而寻求利用搜索方法来证明定理，(作者认为)这是一个更加类似人类的、而且一般用途的程序。
+
+搜索方法也最早从20世纪50年代就开始了，而且在20世纪持续地发展。
+
+>With the introduction of DD10,17, area methods61 and full-angle methods30, geometry solvers use higher-level deduction rules than Tarski’s or Hilbert’s axioms and are able to prove a larger number of more com plex theorems than those operating in formal languages.
+
+在引入DD、面积法、全角法之后，几何问题求解器可以利用比Tarski's或者Hilbert's公理更加高级(higher-level)推理规则，而能够比那些在形式化语言中工作的方法，证明更多更加复杂的定理。
+
+>Geometry theorem proving falls behind the recent advances made by machine learning because its presence in formal mathematical libraries such as Lean or Isabelle is extremely limited.
+
+然而，如今的几何定理证明，仍然依赖人类设计的启发式搜索方法，来进行辅助构造。几何定理证明落后于最新的，由机器学习带来的进步，是因为它存在于形式化数学程序库，例如Lean或Isabelle中的工具是极其有限的。
+
+### Synthetic data in theorem proving
+
+合成数据长期以来都被认为，并作为一个重要的定理证明中的要素所使用。最新的机器学习方法利用了专家迭代(expert iteration)来生成合成证明的工具(curriculum)。然而他们的方法，仅仅只能生成一个用于预先定义问题几何的综合证明，这个几何也被人类所设计和选择。
+
+作者提出的方法，从另一个角度来说，同时生成了综合的问题和证明，而且是从零开始。Aygun等类似的使用后验知识回放(hindsight replay)来生成综合证明，提供了难度平滑的定理，来避免学习作者提出的工作。
+
+然而，AlphaGeometry并不是在现有的人类所构想的猜测(conjectures)训练的，而且也不是从那些在目标定理上尝试的证明上学习。因此，他们的方法(与作者的方法)是正交的，所以未来可以用于进一步地改进AG。
+
+与作者的工作最相似的是Firoiu等人的工作，他们使用了一个前向提议器(proposer)，通过深度有限的探索方法来生成综合数据，而且纯粹在这些综合数据上训练了一个神经网络。
+
+而作者的工作，从另一个角度来说，使用了广度优先的探索，这对于获得最小证明和前提来说是必须的，因此引入了新的符号和假设，而前向建议器是不能这样建议的(forward proposer cannot propose)。
