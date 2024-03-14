@@ -52,7 +52,7 @@ DD(ref. 17)通过在一些有限的推理规则中解释代数推理来解决这
 
 从更高的维度来说，作者首先将输入的线性方程转化为他们系数的矩阵。特别地，作者创建了一个系数矩阵 $A \in R^{M \times N}$ ，其中N是变元(variables)的个数，M是输入方程的个数。
 
-在几何中，任何如同形式 $a-b=c-d \Leftrightarrow a-b-c+d=0$ 。例如，角度等式 $\angle ABC = \angle XYZ$ ，可以被表示为 $s(AB) - s(BC) = s(XY) - s(YZ)$ ，其中 $s(AB)$ 是AB和x方向之间的角度，以 $\pi$ 为模。
+在几何中，任何等式都是 $a-b=c-d \Leftrightarrow a-b-c+d=0$ 的形式。例如，角度等式 $\angle ABC = \angle XYZ$ ，可以被表示为 $s(AB) - s(BC) = s(XY) - s(YZ)$ ，其中 $s(AB)$ 是AB和x方向之间的角度，以 $\pi$ 为模。
 
 同样地，比例 $AB:CD = EF:GH$ 可以被表示为 $\log {(AB)} - \log {(CD)} = \log {(EF)} - \log {(GH)}$ ，其中 $\log{(AB)}$ 是线段AB长度的对数。对于距离，每个变量都是一个(点，线)对，代表具体线段上的一个具体的点。
 
@@ -69,23 +69,76 @@ $$
 
 ## 4
 
-从这个结果中，作者可以确切地(deterministically)而且彻底地推理出所有新的等式，只要通过检查：$如果x_1 = x_2 或 x_1 - x_2 = x_2 - x_3 或 x_1 - x_2 = x_3 - x_4$ ，其中 $\{ x_1, x_2, x_3, x_4\}$ 是所有变量的任意4-置换(4-permutation)。
+从这个结果中，作者可以确切地(deterministically)且彻底地推理出所有新的等式，只要通过检查：$如果x_1 = x_2 或 x_1 - x_2 = x_2 - x_3 或 x_1 - x_2 = x_3 - x_4$ ，其中 $\{ x_1, x_2, x_3, x_4\}$ 是所有变量的任意4-置换(4-permutation)。
 
-在上述的高斯消元中，例如，AR会从三个输入的等式中推理出 $b=d$ 。为了解决几何常量，例如 ”$0.5 \pi$“ 或者 ”$\frac 5 {12}$“，作者将 ”$\pi$“ 和 ”1“ 作为默认的变量记入所有的系数矩阵。
+例如，在上述的高斯消元中，AR会从这三个输入的等式中推理出 $b=d$ 。为了解决几何常量，例如 ”$0.5 \pi$“ 或者 ”$\frac 5 {12}$“，作者将 ”$\pi$“ 和 ”1“ 作为默认的变量记入所有的系数矩阵。
 
 ## Deductive database implementation
 
 推理数据库实现
 
-不同于原先的(original)DD的实现，作者使用了图数据结构来捕捉(capture)几何的对称信息(symmetries)，而不是使用标准的(canonical)字符串的形式。由于使用了图的数据结构，作者可以捕捉到不仅仅是函数参数(function arguments)的对称置换，还可以捕捉到等式的传递性(transitivity)、共线性(collinearity)、以及周期性(concyclicity)。
+不同于原先的(original)DD的实现，作者使用了图数据结构来捕捉(capture)几何的对称信息(symmetries)，而不是使用标准的(canonical)字符串的形式。由于使用了图的数据结构，作者可以捕捉到不仅仅是函数参数(function arguments)的对称置换(symmetrical permutations)，还可以捕捉到等式的传递性(transitivity)、共线性(collinearity)、以及共圆性(concyclicity)。
 
-这种图的数据结构将它自己融入(bakes itself)进了一些推理规则中，可以在用于DD的几何规则列表中明显地看到。这些从原始列表里获得的推理规则，因此没有被用在探索的任何地方，而是隐晦地使用了，而且在有需要的时候就能够明确地详细说明，只要当最终地证明被序列化成文本时。
-
+这种图的数据结构将它自己融入(bakes itself)进了一些推理规则中，在DD中使用的那些几何规则列表中，这些推理规则已经被明确地规定了(explicitly stated)。因此，这些从原始列表中获得的推理规则，并没有被用在探索中的任何地方，而是隐含地使用了，而且在有需要时，也就是当最终的证明被序列化成文本时，就能够被明确地转译(spelled out)。
 
 ## Traceback to find minimal proofs
 
-回溯来找到最小的证明
+回溯来找到最少的证明序列(minimal proofs)。
+
+每个推理步骤需要带有(coupled with)一个回溯算法，这个算法返回最近先前命题的最小集合，这对于推理出结论命题的步骤来说是非常重要的。
+
+对于提取出主要文本中的证明图谱和最小前提来说，这是最为核心的构建要素。一个最小-前提-提取的算法对于避免多余的辅助构造来说是非常重要的，因为这些构造会导致不必要传递中的证明(proof through unnecessary transitivity)。例如，“a=b” 和 “b=c” 可能不是很必要，如果 ”a=c“ 并不能直接从其他推理链条中获得的话。
 
 ## Traceback for geometric-rule deduction
 
 为了几何规则推理的回溯
+
+为此，作者记录了等式转移图(equality transitivity graph)。例如，如果 “$a=b, b=c, c=d$” 而且 “$a=d$” 被推理出来了，结果就是顶点a,b,c,d被连接到了同样的 “等式顶点(equality node)” e上，作者就在e中保持一个图，图上有边 \[(a,b), (b,c), (c,d), (a,d)\] 。这使得回溯算法可以进行广度优先搜索，来找到a,b,c,d中任意两对变量之间矩阵转换的最短路径。
+
+然而，对于共线性和共圆性，这种表示会更加的复杂。在这些例子中，超图 $G(V,E)$ 带有3条边或4条边被用作等式传递矩阵。现在回溯等价于找到一个最小生成树(minimum spanning tree)，也就是下述公式中的MST，顶点(三个共线顶点或四个共圆顶点)的目标集合，其中的权重是图的超边 $e^{'}$ 的并集的基(cardinalitya)：
+
+$$
+MST(S) = \min_{T \subset E} |{ \cup_{e^{'} \subset T w(e^{'}) } }|
+\space s.t. S \subset T
+$$
+
+这样的优化是一个NP-hard问题，因为它是顶点覆盖的决策版本的缩减。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
+
+## Traceback for algebraic deduction
+
+通过高斯消元法的回溯可以被看作是等价于一个混合整数(mixed integer)的线性规划问题。给定输入等式的稀疏矩阵A，这个矩阵由前述的内容所构造的，还有一个带有系数向量 $b \in R^N$ 的目标等式，作者通过定义非负整数决策向量 $x,y \in Z^M$ 来决定对于 $b$ 的前提的最小集合，并且解决下述的混合整数线性规划问题：
+
+$$
+x,y = \min_{x,y} \sum_i (x_i+y_i)
+\space s.t. A^T (x-y) = b
+$$
+
+对于等式的直接父节点的最小集合可以被b表示，就是第i个等式 (A中的第i行)，相关的决策变量 $(x_i - y_i)$ 是非0的。
+
+## Integrating DD and AR
+
+融合推理数据库与代数规则
+
+DD和AR被交替(alternately)用于扩展他们的联合推理闭包。DD的输出，包含用推理规则推理出的新命题，这些输出被输入到AR中，反之亦然。
+
+例如，如果DD推理出了“AB平行于CD”，AB和CD的斜率在AR的稀疏矩阵A中，被更新成相等的变量(系数矩阵A定义在Algebraic reasonning部分)。
+
+也就是说，与斜率AB相关的列会被置为1，与斜率CD相关的则是-1，这一行会被加入系数矩阵A。高斯消元以及混合整数线性规划在AR执行后会再次运行，生成新的等式作为下一次DD迭代的输入。
+
+>Both DD and AR are deterministic processes that only depend on the theorem premises, therefore they do not require any design choices in their implementation.
+
+这个循环一直重复，直到联合推理闭包停止扩张。DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提，因此他们在实现上不需要任何的设计决策。
+
+## Proof pruning
+
+证明剪枝
+
+尽管任何顶点的直接祖先顶点的集合是最小的了，但这并不能保证完全回溯的依赖子图 $G(N)$ 和必要的前提P是最小的。
+
+这里作者将最小化定义成一个性质(property)，即 $G(N)$ 和P不能被进一步地剪枝，且不损失任何结论的可达性(conclusion reachability)。
+
+如果不进行最小化，作者可以得到许多带有无意义的(vacuous)辅助构造的综合证明步骤，且与实际证明关系不大，也可以被完全弃用(discarded)。
+
+为了解决这个问题，作者使用了彻底地试错(trial and error)，丢弃辅助点地每一个子集，并在前提的更小子集上重新运行DD+AR，来验证目标的可达性。最后，算法将整个尝试中能够获得的最小证明返回。这个证明-剪枝步骤是同时通过综合数据生成，以及在测试时间中每一个成功的证明搜索。
+
+## Parallelized data generation and 
