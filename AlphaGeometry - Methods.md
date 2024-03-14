@@ -1,6 +1,4 @@
-# Methods
-
-## Geometry representation
+# Geometry representation
 
 通用的形式化语言形式化语言，比如Lean，那么目前仍然需要大量的准备工作(groundwork)来描述大多的IMO几何题目。作者没有直接解决这个挑战，因为它需要深厚的专业知识，以及大量的在定理证明方法论之外的研究。
 
@@ -10,7 +8,7 @@
 
 为了覆盖解释性(expressive)更强的代数(algebraic)和算数(arithmetic)推理，作者也增加了整数、分数、以及几何常量到这个语言中。作者并没有更加进一步地得到几何表示的完善解法，因为它是一个完全不同，而且极具挑战性的研究主题，这需要数学形式化社区中大量的研究(investment)。
 
-## Sampling consistent theorem premises
+# Sampling consistent theorem premises
 
 采样固定的定理前提
 
@@ -22,7 +20,7 @@ Extended Data Table 1中又一个完善的，关于构造动作(actions)的列�
 
 在ref. 32中可以找到一个更加普遍、更具解释性的图像构建语言。但是作者使用的是一个更简单的语言，这个(形式化)语言已经足够来描述IMO-AG-30中的问题了，而且也能与符号引擎DD工作得很好。
 
-## The symbolic deduction engine
+# The symbolic deduction engine
 
 符号推理引擎的核心功能(functionality)是推理出新的真命题(true statements)，在给定了定理前提的情况下。引擎能够通过几何规则，比如“如果X，则Y”这样的规则，来进行推理(deduction)，其中X和Y都是几何命题(statements)的集合，例如“A,B,C是共线的”。
 
@@ -34,7 +32,7 @@ Extended Data Table 1中又一个完善的，关于构造动作(actions)的列�
 
 作者的符号推理引擎是DD和AR的精密的融合(intricate integration)，作者也就用它来扩展已知真命题的联合闭包(closure)，直到扩展停止(halt)。这个过程通常在几秒钟之内，最多到几分钟之内就停止了，而且是在一个标准的不使用加速器的硬件上。
 
-## Algebraic reasoning
+# Algebraic reasoning
 
 代数推理
 
@@ -90,7 +88,7 @@ $$
 
 例如，在上述的高斯消元中，AR会从这三个输入的等式中推理出 $b=d$ 。为了解决几何常量，例如 ”$0.5 \pi$“ 或者 ”$\frac 5 {12}$“，作者将 ”$\pi$“ 和 ”1“ 作为默认的变量记入所有的系数矩阵。
 
-## Deductive database implementation
+# Deductive database implementation
 
 推理数据库实现
 
@@ -98,7 +96,7 @@ $$
 
 这种图的数据结构将它自己融入(bakes itself)进了一些推理规则中，在DD中使用的那些几何规则列表中，这些推理规则已经被明确地规定了(explicitly stated)。因此，这些从原始列表中获得的推理规则，并没有被用在探索中的任何地方，而是隐含地使用了，而且在有需要时，也就是当最终的证明被序列化成文本时，就能够被明确地转译(spelled out)。
 
-### Traceback to find minimal proofs
+## Traceback to find minimal proofs
 
 回溯来找到最少的证明序列(minimal proofs)。
 
@@ -106,7 +104,7 @@ $$
 
 对于提取出主要文本中的证明图谱和最小前提来说，这是最为核心的构建要素。一个最小-前提-提取的算法对于避免多余的辅助构造来说是非常重要的，因为这些构造会导致不必要传递中的证明(proof through unnecessary transitivity)。例如，“a=b” 和 “b=c” 可能不是很必要，如果 ”a=c“ 并不能直接从其他推理链条中获得的话。
 
-## Traceback for geometric-rule deduction
+# Traceback for geometric-rule deduction
 
 为了几何规则推理的回溯
 
@@ -121,7 +119,7 @@ $$
 
 上述的优化是一个NP-hard问题，因为它是顶点覆盖问题的决策版本的一种简化(a reduction from the decision version of vertex cover)。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
 
-## Traceback for algebraic deduction
+# Traceback for algebraic deduction
 
 通过高斯消元法的回溯，可以被看作等价于一个混合整数(mixed integer)的线性规划问题。给定输入等式的稀疏矩阵 $A$ ，这个矩阵由前述的内容所构造的，还有一个带有系数向量 $b \in R^N$ 的目标等式。作者通过定义非负整数决策向量 $x,y \in Z^M$ 来决定对于 $b$ 的前提的最小集合，并且解决下述的混合整数线性规划问题：
 
@@ -132,7 +130,7 @@ $$
 
 对于等式的直接父节点的最小集合可以被b表示，就是第i个等式 (A中的第i行)，相关的决策变量 $(x_i - y_i)$ 是非零的。
 
-## Integrating DD and AR
+# Integrating DD and AR
 
 融合推理数据库与代数规则
 
@@ -146,7 +144,7 @@ DD和AR被交替(alternately)用于扩展他们的联合推理闭包。DD的输�
 
 DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提，因此他们在实现上不需要任何的决策设计。
 
-## Proof pruning
+# Proof pruning
 
 证明剪枝
 
@@ -158,7 +156,7 @@ DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提�
 
 为了解决这个问题，作者使用了彻底的试错方法(exhaustive trial and error)，丢弃辅助点的每一个子集，并在更小的前提子集上重新运行DD+AR，来验证目标的可达性。最后，算法将整个尝试中能够获得的最小证明返回。这个证明-剪枝步骤是通过综合数据生成，以及在测试时间中每一个成功的证明搜索中同时完成的。
 
-## Parallelized data generation and deduplication
+# Parallelized data generation and deduplication
 
 并行数据生成以及数据去重
 
@@ -170,7 +168,7 @@ DD和AR都是确定的(deterministic)过程，并仅仅只依赖于定理前提�
 
 JGEX中收录的一个几何问题集中，包含的大多是中等难度的题目以及众所周知的定理，而作者在这个问题集上发现了接近20个问题也在合成数据集中。这说明训练数据覆盖了相当数量的几何领域的基本常识，但是更加复杂的(sophisticated)定理的空间仍然更加巨大。
 
-## Language model architecture and training
+# Language model architecture and training
 
 语言模型架构和训练(细节)
 
@@ -184,9 +182,9 @@ JGEX中收录的一个几何问题集中，包含的大多是中等难度的题�
 
 对于微调，作者在另外一百万步之内保持了最终的学习率0.001。对那些不使用预训练的方法，作者将学习率在一百万步之内从0.01下降到0.001。作者没有使用任何的超参数优化(hyperparameter tuning)。这些超参数的值要么选定为一个非常大的整数值(round number)比如训练的部署，或者由Meliad代码库中默认提供。
 
-## Parallelized proof search
+# Parallelized proof search
 
-### 1
+## 1
 
 因为语言模型解码过程会返回k个不同的序列，来描述k个备选的辅助构造，作者在这k个选择中进行集束搜索(beam search)，并且用的是每个技术的得分作为它的值函数。
 
@@ -194,7 +192,7 @@ JGEX中收录的一个几何问题集中，包含的大多是中等难度的题�
 
 如果将这些因子扩大(scale up)，来检查更大比例的搜索空间，”有可能“进一步改善AlphaGeometry的结果。
 
-### 2
+## 2
 
 对于每个问题，作者使用了四个GPU核心的集群，其中每个都存储一份transformer语言模型的副本，为的是在不同的集束中拆分工作载荷，同时也有一个10000CPU核心的集群来存储符号解题器，分担全部30道题目上的全部集束。
 
@@ -202,7 +200,7 @@ JGEX中收录的一个几何问题集中，包含的大多是中等难度的题�
 
 作者利用了这点，以及语言模型的解码速度来推断每个问题所需要的并行性(parallelism)，分别来说，这些并行性就是在Extended Data Fig. 1中展现了不同时间限制下的模型，在IMO上所需要的数量。
 
-## The effect of data and search
+# The effect of data and search
 
 数据和搜索的影响
 
@@ -210,7 +208,7 @@ JGEX中收录的一个几何问题集中，包含的大多是中等难度的题�
 
 作者还发现，集束的大小设置为8，也就是64倍削减于原始集束大小512，AG仍然解决了21道题。同样地，如果将搜索深度从16削减到只有2，而保持512的集束大小的话，也能得到同样解决21题的结果。
 
-## Evaluation on a larger test set
+# Evaluation on a larger test set
 
 在更大的测试集上进行评估
 
@@ -220,9 +218,9 @@ JGEX中收录的一个几何问题集中，包含的大多是中等难度的题�
 
 不同方法的总体排名与在Table 1中的结果保持一致，也就是AG解决了几乎所有的问题(98.7%)。最强的基准 DD+AR+human-designed heuristics 解决了92.2%，然而先前最好的方法解决了75%。
 
-### AlphaGeometry framework and applicability to other domains
+## AlphaGeometry framework and applicability to other domains
 
-#### 1
+### 1
 
 >The strength of AlphaGeometry’s neuro-symbolic set-up lies in its ability to generate auxiliary constructions, which is an important ingredient across many mathematical domains.
 
@@ -230,7 +228,7 @@ AG框架及其对于其他领域的适用性。AG的神经-符号设定的强大
 
 在Extended Data Table 3中，作者在其他四个数学领域中给出了例子，其中也说明辅助构造对于解题是非常关键的。在Extended Data Table 4中，作者给出了有关几何证明和不等式证明的逐行对比，题目是IMO 1964 P2，其中强调了他们都能适配相同的框架。
 
-#### 2
+### 2
 
 作者的工作展现了语言模型是可以从合成数据中，学着去提出(come up with)辅助构造的，其中问题的声明和辅助构造一起都是随机生成的，然后被回溯算法分割(separated)，以分辨依赖性差异(dependency difference)。具体地，AG这个框架需要以下的要素：
 
@@ -239,13 +237,13 @@ AG框架及其对于其他领域的适用性。AG的神经-符号设定的强大
 3. 工作在实现(1)中的符号引擎
 4. 给予符号引擎的一个回溯步骤(procedure)
 
-#### 3
+### 3
 
 利用这四个要素和在正文描述的算法，我们就可以生成针对任何领域的合成数据了。正如在作者论文中所展现的，构建每一块要素都有着工程上(engineering)不平凡的(non-trivial)挑战。
 
 例如，最新的组合数学的形式化就处于非常初期的阶段(nascent)，这也就在要素1、2上带来了挑战。同时，构建强大的、针对不同领域的符号引擎需要深度的领域专业知识，这就在要素3、4要素上带来了巨大的挑战。作者认为可以将这种框架应用于更广阔的领域，作为未来的工作，而且他们也期待能够解决这些挑战的更深入的创新。
 
-## Transformer in theorem proving
+# Transformer in theorem proving
 
 定理证明中的Transformer
 
@@ -256,7 +254,7 @@ AG框架及其对于其他领域的适用性。AG的神经-符号设定的强大
 
 在证明-搜索算法以及在线训练上的创新，也改善了基于transformer的方法，在代数和数论上也解决了总共十道IMO题目。然而，这些进步，在一个大量的人类证明例子、以及由人类设计和组织(curated)的独立的题目命题是可以预测的。
 
-### Geometry theorem proving
+## Geometry theorem proving
 
 几何定理证明，在一个完全不同的(separate)空间中进化(evolve)。它的研究(literature)被分成了两个分支，一个是计算机代数方法，一个是搜索方法。
 
@@ -272,7 +270,7 @@ AG框架及其对于其他领域的适用性。AG的神经-符号设定的强大
 
 然而，如今的几何定理证明，仍然依赖人类设计的启发式搜索方法，来进行辅助构造。几何定理证明落后于最新的，由机器学习带来的进步，是因为它存在于形式化数学程序库，例如Lean或Isabelle中的工具是极其有限的。
 
-### Synthetic data in theorem proving
+## Synthetic data in theorem proving
 
 合成数据长期以来都被认为，并作为一个重要的定理证明中的要素所使用。最新的机器学习方法利用了专家迭代(expert iteration)来生成合成证明的工具(curriculum)。然而他们的方法，仅仅只能生成一个用于预先定义问题几何的综合证明，这个几何也被人类所设计和选择。
 
