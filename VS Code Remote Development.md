@@ -68,7 +68,7 @@ You'll have noticed an indicator on the bottom-left corner of the Status bar. Th
 
 配置的内容如下：
 
-```
+```text
 Host hostname
   HostName host_IP
   User username
@@ -89,6 +89,4 @@ See details in [[Conda & Anaconda]].
 
 安装配置环境时，尽量不要使用 `conda install` ，可能会有莫名的报错。
 
-注意CUDA版本号和torch版本的匹配问题。
-
-`nvidia-smi` 可以查看CUDA版本号。
+注意CUDA版本号和torch版本的匹配问题，使用命令`nvidia-smi` 可以查看CUDA版本号。
