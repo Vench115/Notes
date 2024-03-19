@@ -117,7 +117,9 @@ MST(S) = \min_{T \subset E} |{ \cup_{e^{'} \subset T } w(e^{'}) }|
 \space s.t. S \subset T
 $$
 
-上述的优化是一个NP-hard问题，因为它是顶点覆盖问题的决策版本的一种简化(a reduction from the decision version of vertex cover)。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
+>Such optimization is NP-hard, as it is a reduction from the decision version of vertex cover. We simply use a greedy algorithm in this case to find a best-effort minimum spanning tree.
+
+上述的优化问题是一个NP-hard问题，因为它是顶点覆盖问题的决策版本的一种简化。作者在这个例子中简单地使用了一个贪心算法，来找到一个尽力而为的(best-effort)最小生成树。
 
 # Traceback for algebraic deduction
 

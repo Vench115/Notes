@@ -2,13 +2,15 @@
 
 [Visual Studio Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
 
+>此处提到的方案，是纯远程开发，即所有的操作/环境/存储都在远程。
+
 # VS Code extension
 
 1. 在VSCode里下载扩展(包)。
 
 The **Remote Development extension pack** includes four extensions. See the following articles to get started with each of them:
 
-- Remote-SSH - Connect to any location by opening folders on a remote machine/VM using SSH.
+- Remote-SSH - Connect to any location by opening folders on a remote machine/VM using SSH. (暂且只需要这个)
 - Dev Containers - Work with a separate toolchain or container-based application inside (or mounted into) a container.
 - WSL - Get a Linux-powered development experience in the Windows Subsystem for Linux.
 - Remote-Tunnels - Connect to a remote machine via a secure tunnel, without configuring SSH.
@@ -32,7 +34,7 @@ The tutorials below will walk you through running Visual Studio Code with the Re
 
 This tutorial walks you through creating and connecting to a virtual machine (VM) on Azure using the Visual Studio Code [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension. You'll create a Node.js Express web app to show how you can edit and debug on a remote machine with VS Code just like you could if the source code was local.
 
-> **Note**: Your Linux VM can be hosted anywhere - on your local host, on premise, in Azure, or in any other cloud, as long as the chosen Linux distribution meets these [prerequisites](https://code.visualstudio.com/docs/remote/linux#_local-linux-prerequisites).
+>**Note**: Your Linux VM can be hosted anywhere - on your local host, on premise, in Azure, or in any other cloud, as long as the chosen Linux distribution meets these [prerequisites](https://code.visualstudio.com/docs/remote/linux#_local-linux-prerequisites).
 
 2. 下载SSH扩展，下载完成后，VS Code左下角会出现新的状态条。
 
@@ -50,7 +52,7 @@ This tutorial walks you through creating and connecting to a virtual machine (VM
 
 将先前生成的SSH密钥加入VM，可以在第一次登录以后的登录中，不用繁琐地再次输入密码。
 
-> Take the public key and paste it into your VM setup, by copying the entire contents of the `id_ed25519.pub` in the **SSH public key**.
+>Take the public key and paste it into your VM setup, by copying the entire contents of the `id_ed25519.pub` in the **SSH public key**.
 
 在运用SSH连接VM之后，可以在文件 `/.ssh/authorized_keys` 中加入自己的 `id_ed25519.pub` 公钥内容，以省去多次输入密码的麻烦。
 

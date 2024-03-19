@@ -2,6 +2,8 @@
 
 [Linux 命令大全 | 菜鸟教程 (runoob.com)](https://www.runoob.com/linux/linux-command-manual.html)
 
+[Linux 常用命令集合 | 菜鸟教程 (runoob.com)](https://www.runoob.com/w3cnote/linux-common-command.html)
+
 [Linux 常用命令全拼 | 菜鸟教程 (runoob.com)](https://www.runoob.com/w3cnote/linux-command-full-fight.html)
 
 任意命令 + `--help` 显示更完整的、更详细的选项和使用方法。
@@ -104,6 +106,17 @@ tree 命令用于以树状图列出目录的内容。执行 `tree` 指令，它�
 
 # 文件管理
 
+## `find`
+
+find 命令用于在指定目录下查找文件和目录。它可以使用不同的选项来过滤和限制查找的结果。
+
+```shell
+find [路径] [匹配条件] [动作]
+find . -name file.txt  # 查找当前目录下名为 file.txt 的文件
+find . -name "*.c"  # 将当前目录及其子目录下所有文件后缀为 .c 的文件列出来
+find /home -size +1M  # 查找 /home 目录下大于 1MB 的文件
+```
+
 ## `rm`
 
 remove 命令用于删除一个文件或者目录。
@@ -121,6 +134,19 @@ rm -r *  # 删除当前目录下的所有文件及目录
 
 >文件一旦通过rm命令删除，则无法恢复，所以必须**格外小心**地使用该命令。
 
+## `cat`
+
+concatenate 命令用于连接文件并打印到标准输出设备上。
+
+```shell
+cat -n textfile1 > textfile2  # 把 textfile1 的文档内容加上行号后输入 textfile2 这个文档里
+cat /dev/null > /etc/test.txt  # 清空 /etc/test.txt 文档内容
+
+-n 或 --number - 由 1 开始对所有输出的行数编号
+-b 或 --number-nonblank - 和 -n 相似，只不过对于空白行不编号
+-s 或 --squeeze-blank - 当遇到有连续两行以上的空白行，就代换为一行的空白行
+-E 或 --show-ends - 在每行结束处显示 $
+```
 ## `touch`
 
 touch 命令用于修改文件或者目录的时间属性，包括存取时间和更改时间。若文件不存在，系统会建立一个新的文件。`ls -l` 可以显示档案的时间记录。
@@ -209,3 +235,18 @@ shutdown -h 10   # 指定10分钟后关机
 
 finger 命令可以让使用者查询一些其他使用者的资料。例如：Login Name; User Name; Home directory; ......
 
+# 系统信息
+
+## `lsb_release`
+
+`lsb` 是 Linux Standard Base（Linux标准库）的缩写， **lsb_release命令** 用来与具体Linux发行版相关的Linux标准库信息。
+
+注：LSB的译法有Linux标准库，Linux标准规范；CentOS最小化安装时默认没有这个命令，需要安装 `lsb_release` 使用命令。
+
+```shell
+lsb_release -a  # 显示全部信息，包括LSB、版本号、代号、版本描述信息
+```
+
+## `nvidia-smi`
+
+命令用于查看nvidia显卡相关的信息：显存使用情况、显卡驱动版本、CUDA版本等等。
