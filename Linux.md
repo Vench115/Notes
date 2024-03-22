@@ -214,6 +214,22 @@ sudo命令以系统管理者的身份执行指令，也就是说，经由 sudo �
 sudo -l  # 显示出自己(执行sudo的使用者)的权限
 ```
 
+## `apt`
+
+Advanced Packaging Tool 命令是一个在 Debian 和 Ubuntu 中的 Shell 前端软件包管理器。apt 命令提供了查找、安装、升级、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。apt 命令执行需要超级管理员权限(root)。
+
+```shell
+sudo apt update  # 查看可更新的包
+sudo apt upgrade  # 升级安装包
+sudo apt update && sudo apt upgrade -y  # 将以上两个命令组合起来
+sudo apt remove <package_name>=<version_number>  # 指定安装版本
+sudo apt list  # 列出可更新的包
+sudo apt autoremove  # 清理不再使用的依赖和库
+
+sudo apt install < package_name> --no-upgrade  # 只想升级而不要安装
+--only-upgrade  # 只升级 若包不存在则不安装
+```
+
 ## `reboot`
 
 reboot 命令用于用来重新启动计算机。若系统的 runlevel 为 0 或 6 ，则重新开机，否则以 shutdown 指令（加上 -r 参数）来取代。
