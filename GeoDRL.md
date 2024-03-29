@@ -18,7 +18,7 @@ GeoDRL通过无监督学习，在Geometry3K数据集上展现了更好的准确�
 - Attribute：几何元素的属性(property)，通常可以解释成一个数值，例如线段的长度、角度、圆的半径等
 - Predicate：几何元素之间的关系，例如点在线上、线段1垂直于线段2等等
 - Interpretation：一个几何问题中所有元素、属性和谓词的完整描述
-- Theorem：一个先验的几何知识，应用于推理过程中，来获得新的集合元素、属性或者关系
+- Theorem：一个先验的几何知识，应用于推理过程中，来获得新的几何元素、属性或者关系
 
 一个n步的推理序列：$\tau = \{ p_1, p_2, \dots, p_n \}$ 其中 $p_t$ 是推理序列中的第 $t$ 步，可以表达为：$p_t = I_{t-1} \rightarrow^{k_t} I_t$ ，其中 $k \in \mathcal{K B}$ 是几何定理集合 $\mathcal{KB}$ 中的一条定理，而 $I$ 是几何描述信息。
 
@@ -31,7 +31,7 @@ GeoDRL通过无监督学习，在Geometry3K数据集上展现了更好的准确�
 
 ## Reinforcement Learning Modeling
 
-3.1中作者描述了几何问题求解，推理过程被建模成解决马尔可夫决策过程(Markov Decision Process)。对于集合推理的MDP来说，它包含所有潜在的几何描述状态以及它们之间的转移概率。
+3.1中作者描述了几何问题求解，推理过程被建模成解决马尔可夫决策过程(Markov Decision Process)。对于几何推理的MDP来说，它包含所有潜在的几何描述状态以及它们之间的转移概率。
 
 因此，作者采用了Q-Learning，一种DRL算法来基于状态的Q-Value，选择动作。在这种框架中，几何描述信息是状态空间 $\mathcal S = \{ s_i | i = 1,2,\dots \}$ ，几何定理几何是动作空间 $\mathcal A = \{ a_i | i = 1,2,\dots \}$ 。DRL agent是一个深度神经网络，对于在状态s中选择动作a产生值 $Q(s, a)$ 。
 
@@ -45,7 +45,92 @@ GeoDRL通过无监督学习，在Geometry3K数据集上展现了更好的准确�
 
 GLG是一个异构的属性图谱(heterogenous attributed graph)，$G = (V,E,\Sigma, L)$，其中V是代表几何元素类型的顶点；E是边的集合，$e = (u,v)$ 表示顶点u到顶点v的边，也就是这两个几何元素间存在几何关系；$\Sigma$ 是属性的域；L是将属性分配给顶点的函数。
 
-$l(v)$ 是v的属性。例如，如果v表示线段AB，那么l(v)就代表AB的长度。GLG是一个有向图，其中在不同几何元素之间的每条边 $e=(u,v)$ 都存在它自己的逆边 $e^{-1} = (v,u)$ 。更进一步的，为了在一张图中表达题目信息 $I$ 以及目标 $g$ ，作者将 $g$ 看作目标元素的一个特殊属性加入到GLG中。
+$l(v)$ 是v的属性。例如，如果v表示线段AB，那么l(v)就代表AB的长度。GLG是一个有向图，其中在不同几何元素之间的每条边 $e=(u,v)$ 都存在它自己的逆边 $e^{-1} = (v,u)$ 。更进一步的，为了在一张图中表达题目信息 $I$ 以及目标 $g$ ，作者将 $g$ 看作目标元素(targeted primitives)的一个特殊属性加入到GLG中。Figure 3 展示了一个GLG的例子。
+
+此处作者讨论了GLG对比之前工作中，符号逻辑表达式(symbolic logical expressions)的优势。首先，GLG结构化成图，并且将几何解释信息融入进它的顶点和边中，这就避免了冗余的符号语法(symbolic grammar)。
+
+其次，在符号逻辑表示中，一个几何元素是通过它的标记(notation)而定义的，造成的结果是神经网络学习到的特征会专注于它的标记。这是违反直觉的(counter-intuitive)，因为把一个点的标记从A改成X不会很大程度地影响问题定义。在GLG中，一个元素地特征仅仅通过它的类型、属性以及它与其他元素的关系定义，而不是它本身的标记。
+
+特别地，作者将图像和文本分别解析了。对于图像，作者使用了PGDPNet作为图像解析器。PGDPNet是一个用于从几何图像中、提取元素和谓词的、端到端的模型，在平面几何图像解析上达到了SOTA的表现。PGDPNet把图像作为输入，生成点、线、圆的实例，以及代表元素间关系的逻辑表达式(logical expressions)。
+
+对于文本，作者借用了Inter-GPS中的文本解析器。语义解析器把文本解析成符号逻辑表达式，通常包含目标。作者把上述两个分支中得到的逻辑表达式结合起来，并将它们结构化成一个GLG，包含一个初始的解释信息 $I_0$ 以及目标 $g$ 。
 
 ## Reasoner
+
+给定一个初始的解释信息 $I_0$ ，一个求解目标 $g$ ，以及一个几何定理集合 $\mathcal{KB}$ ，推理器的目标是生成一个推理序列 $\tau$ ，其中 $I_t$ 满足目标 $g$ 。作者将这个过程建模成马尔可夫决策过程，并采用了DRL来解决MDP。
+
+作者实现了一个环境，也就是一个符号几何系统(symbolic geometric system)。这个系统解析几何的表示信息和目标，并采取行动，更新状态信息并给出奖励。作者设计了一个深度强化学习agent来实现DQN算法，利用GNN来近似其中的q-value函数。DRL agent通过Q-value来选择当前状态的行动，并且跟环境交互(interact)来获得奖励以及下一个状态。
+
+### Environment
+
+上述提到的环境被描绘成一个符号几何系统。系统解析(resolve) [[#Parser]] 中提到的GLG，并存储几何描述信息以及目标。它应用一个几何定理，更新描述信息，而且通过agent各处的动作指导来生成一个奖励。在一个更新过程 $s \rightarrow s'$ 中，作者的奖励函数设置如下所示：
+
+$$
+Reward =
+\left\{\begin{array}
+ Solve(s',g) - \alpha e^{- \frac{t}{\sigma}} & s \ne s'\\
+ -1.0 & s = s'
+\end{array}\right.
+$$
+
+$$
+Solve(s,g) =
+\left\{\begin{array}{l}
+ 1.0  & s \vdash g\\
+ 0.0  & otherwise
+\end{array}\right.
+$$
+
+其中t代表了过程中已经花费的时间。该系统仅当下一个状态 $s'$ 满足目标 $g$ 时才给出一个正奖励1.0，也就是问题解决的时候。作者加入了一个时间惩罚因子 $- \alpha e^{- \frac{t}{\sigma}}$ 来激励agent选择更有效率的动作。如果状态没有通过应用定理来改变，奖励被设置成-1.0来避免这个动作。
+
+总的来说，奖励函数鼓励agent选择更短、更快的路径，且带有更少的无效动作。
+
+### Action Space
+
+动作空间被定义成一个几何定理集合 $\mathcal{KB}$ ，其中每个定理 $k$ 都被定义成一个条件声明语句 $p \Rightarrow q$ ，带有一个前提p和一个结论q。在t时刻，当在题目演绎(interpretation) $I_{t-1}$ 上应用定理 $k$ 时，如果 $I_{t-1}$ 满足了 $k$ 的前提 $p$ ，那么 $I_{t-1}$ 就根据结论 $q$ 进行更新：
+
+$$
+I_{t-1} \vdash p \Rightarrow I_t \leftarrow I_{t-1} \wedge q
+$$
+
+如果 $I_{t-1}$ 没有满足前提 $p$ ，那么它就不会被更新。更进一步，甚至如果 $p$ 被满足了，$I_t$ 也有可能保持不变。这通常当一个定理接连地被重复使用时发生。作者会把这两种情况称为无效的定理，也就会导致奖励 $r = -1.0$ 。
+
+特别地，作者在这个工作中定义了24条定理，覆盖了例如角、圆、三角、以及多边形等多个类。此外，作者也把辅助线(auxiliary-line)定义为一个类，来解决一些困难的几何问题。
+
+### GNN Architecture
+
+作者使用了一个GNN来学习GLG的图表示信息，以评估状态的Q值。
+
+>This is accomplished through the implementation of a Heterogeneous Attributed Graph Transformer built upon a transformer-based architecture.
+
+这是通过实现一个异构的属性图Transformer来实现的，这建立在一个基于transformer的架构上。
+
+给定一个GLG：$G = (V,E,\Sigma,L)$ ，模型的输入是一连串的顶点，并带有一个特殊的token：$[GRAPH]$ 作为起始。$[GRAPH]$ 聚合了顶点的特征，来捕捉全局的图表示信息。每一个顶点都包含一个顶点类型 $v_i$ 以及顶点的属性 $l(v_i)$ ，这些都被投影进顶点的嵌入(embedding) $h_i$ 中：
+
+$$
+h_i = E_{type} (v_i) + E_{attr} (l(v_i))
+$$
+
+顶点类型是几何元素例如点、线、圆的类型。顶i的那的属性通常被解释成一个数或者带有变量的数学表达式。实际上，记录下每个属性的具体值是没有多大意义的(make little sense)。例如，AB=3.2cm, BC=3.5cm。在这个例子中，我们只需要知道AB和BC的长度是两个不相等的数值即可。因此，作者使用了几个替换词来替换掉不经常出现的属性值。
+
+模型会将GLG的结构信息编码，方式是改进transformer中的自注意力机制。边是通过增加偏置项矩阵 $B$ 来融入自注意力的，用公式描述如下所示：
+
+$$
+Attention(Q,K,V) = softmax(\frac {QK^T} {\sqrt d} + B) V
+$$
+
+$$
+B_{i,j} =
+\left \{\begin{array}{l}
+ E_{edge} (e_{i,j}) & (v_i, v_j) \in E \\
+ 0 & i=j \\
+ -\infty & otherwise
+\end{array} \right.
+$$
+
+当顶点 $v_i$ 到 $v_j$ 存在一条边 $e_{i,j}$ 时，边 $e_{i,j}$ 的嵌入就被加入到attention分数的 $(i,j)$ 位置，作为一个偏置项。否则，作者就通过把分数设为 $-\infty$ 来封闭attention通道。全局图 token：$[GRAPH]$ 会注意到每一个顶点，来聚合所有的特征作为全局的图特征。
+
+综上，作者实现了一个单跳(one-hop)的图注意力网络。最终，图特征向量被送入一个FFN，其输出的维度是动作空间的大小 $|\mathcal A|$ ，以生成Q值。
+
+### Agent Operation
 
