@@ -175,3 +175,35 @@ $$
 其中，$p(s_t | s_{t-1}, a_t)$ 是状态 $s_{t-1}$ 到状态 $s_t$ 的转移概率，采用的动作是 $a_t$ ，具体值通过在Q-value上运用softmax函数计算得到。通过k束搜索，作者最终获得k个候选序列 $\{ \tau_1, \tau_2, \dots, \tau_k \}$ 带有最高k的得分，并选择最佳的 $\tau^*$ 作为结果。在这个研究中，作者用默认的5束来部署GeoDRL。
 
 ## Evaluation
+
+作者在Geometry3K数据集上用几个基准评估了GeoDRL：三个概率方法包括FiLM、FiLM-BERT、FiLM-BART，以及一个符号方法Inter-GPS，它是Geometry3K上的SOTA方法。Table 2展示了所有的结果。
+
+GeoDRL显著地超越了其他的方法，在整体的准确率以及大多数的题目类型上。对比之前SOTA的方法Inter-GPS，GeoDRL获得了11.1%以及10.9%的提升，在整体的准确率上，分别带有或不带有ground truth的解析结果。值得注意的是，GeoDRL(GT)达到了与人类专家类似的准确率得分，这也展现了作者提出的推理器的优越性。
+
+作者也评估了GeoDRL和Inter-GPS的效率。为了公平，两种方法都使用了Geomtery3K的ground truth解析结果，来避免不同解析器的影响。如Table 3所示，相比于Inter-GPS，GeoDRL展现了更好的性能，达到了不仅仅是更高的准确率得分，5束搜索的89.4%相比于Inter-GPS的77.5%，同时也花费了更少的时间，最少平均2.67秒，相比于Inter-GPS的6.35秒。
+
+此外，GeoDRL用更少的步骤解决了每一道题，平均2.27步，集束搜索大小为1，对比之下，Inter-GPS是6.68步。考虑到作者的符号系统是从Inter-GPS派生而来的，所以对比这两种方法的时间和步数是言之有理的。由于在选择定理上的启发式搜索算法，作者发现Inter-GPS会生成带有冗余步骤的解答，导致更长的求解时间和更多的步骤。
+
+总的来说，GeoDRL显著地比之前SOTA得Inter-GPS更好，单从有效性和效率的角度来说。
+
+## Ablation Study
+
+……
+
+>Compared to traditional symbolic expressions, GLG significantly improves the accuracy of single-step theorem prediction from 67.1% to 84.7% when the beam size is set to 1.
+
+GLG显著地提升了单步定理预测的准去率，从67.1%提升到84.7%，当集束大小被设置为1时。……
+
+>Compared to supervised learning, the self-learning RL strategy significantly improves prediction efficiency: the average time is reduced by 24.6% (0.87s) and 29.6% (2.53s) for beam sizes of 1 and 5, respectively, and also an improvement in accuracy.
+
+相比于监督学习，自学习的RL策略显著地改善了预测效率：平均时间降低24.6%和29.6%，当集束大小分别为1和5时，而且也提升了准确度。……
+
+>This indicates that our designed RL strategy with time penalty contributes to learning more efficient solutions. With the heuristic search strategy from Inter-GPS, we obtain poor-quality solutions with numerous redundant steps, averaging as high as 9.58 steps.
+
+## Discussion
+
+在这个部分，作者讨论了他们方法的可解释性。相比于概率的方法，GeoDRL有显式的解析和推理阶段。解析器生成人类可读的中间结果以及一个可视化的图。推理器提供一个含有数学证明的、逐步的推理步骤。不同于符号的方法，GeoDRL对每一条定理都生成一个显示的概率得分，来搜索最高概率的解答，对每一步都提供了解释。
+
+通过使用集束搜索算法，基于状态转移概率，GeoDRL能够对同一道几何问题生成多种解答。Figure 4展示了一个例子。(能够)提供各种解答是非常有用的(highly beneficial)，尤其是对线上教育应用上那些不同能力水平的学生来说，此处我们可以基于学生的学习过程以及知识背景来定制解答。
+
+在某些情况下，解析和推理的主干网络(pipeline)能够对题目求解产生负面的影响。最普遍的一个是阴影面积问题，如Figure 5中所示。解决此类问题的关键是将阴影面积解释成一般图形面积的算数结果，这就需要解析器和推理器在特定图像上的共同努力。
