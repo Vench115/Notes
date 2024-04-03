@@ -5,7 +5,7 @@
 - 通过解决数据稀缺问题，切入解决几何问题
 - 通过解决数据问题，解决了辅助构造问题
 - 通过解决辅助构造问题，解决了复杂的几何问题
-
+---
 - 求解几何问题时，引入天才般的概念
 	- 依赖性差异
 	- 语言模型学习构造
@@ -52,7 +52,7 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 通过在一个随机定理前提(random theorem premises)的繁复(diverse)集合下，运用现有的符号引擎，作者提取了一亿条(100 million)合成的定理以及它们的证明，其中有许多含有超过200个证明步骤，四倍于奥赛定理的平均证明长度。
 
-作者在综合证明生成上，更进一步地定义并且使用了**依赖性差异**(dependency difference)的概念，使得他们的方法能够生成接近一千万(10 million)条综合证明步骤。这些步骤能够构造辅助点，从而超越纯符号推理的范畴。
+作者在综合证明生成上，更进一步地定义并且使用了**依赖性差异**(dependency difference)的概念，使得他们的方法能够生成接近一千万(10 million)条综合证明步骤。这些步骤能够**构造辅助点**，从而超越纯符号推理的范畴。
 
 辅助构造(Auxiliary Construction)是外生项生成的(exogenous term generation)几何实例(instance)，(辅助构造)代表了定理证明中无穷无尽的分支系数(branching factor)，而且在别的数学领域，这也被广泛地认为是许多困难定理证明的关键挑战。
 
@@ -99,7 +99,7 @@ DeepMind团队提出了一种利用合成数据进行定理证明的方法，因
 
 ~~作者提出的用于生成综合数据的方法在Fig. 3中展示。~~他们首先采样一个定理前提的随机集合，充当符号引擎的输入来生成其派生(derivations)。~~一个完整的用于采样的动作列表能够在Extended Data Table 1中找到。~~
 
-在作者的工作中，他们在一个高度并行的环境中，采样了接近十亿(1 billion)条类似的前提，~~这个过程在Methods部分有所描述。~~
+在作者的工作中，他们利用一个高度并行的环境，采样了接近十亿(1 billion)条类似的前提，~~这个过程在Methods部分有所描述。~~
 
 >Note that we do not make use of any existing theorem premises from human-designed problem sets and sampled the eligible constructions uniformly randomly.
 
@@ -157,21 +157,21 @@ $$
 
 # Training a language model on synthetic data
 
-Transformer语言模型是一个强大的深度神经网络，能够学习且通过“下一个token预测”的方法来生成文本序列，助力大量的生成式AI技术方面的进步。
+Transformer语言模型是一个强大的深度神经网络，能够学习且通过“netxt token预测”的方法来生成文本序列，助力生成式AI技术方面的大量进步。
 
-作者把 $(P,N,G(N))$ 序列化成一个文本字符串，其结构是’\<premises\>\<conclusion\>\<proof\>'。通过在这样的符号序列上进行训练，一个语言模型能够高效地学习生成证明，条件是定理的前提以及结论。
+作者把 $(P,N,G(N))$ 序列化成一个文本字符串，其结构是 `<premises> <conclusion> <proof>` 。通过在这样的符号序列上进行训练，一个语言模型能够高效地学习生成证明，其条件是定理的前提以及结论。
 
-# Combining language modelling and symbolic data
+# Combining language modelling and symbolic engines
 
 从更高的层面来说，证明的搜索是一个循环，这个循环中语言模型和符号推理引擎交替运行(take turns to run)，~~如在Fig. 1 b,c中所示。~~证明搜索在定理结论被找到，或循环达到最大迭代次数后停止。
 
 语言模型用问题命题的字符串进行初始化(seeded 规定初始随机值)，并在每一轮都生成一个额外的语句，以问题命题和之前的构造作为条件，来描述一个新的辅助构造，例如“构造点X，使得ABCX是一个平行四边形”。
 
-语言模型每生成一个上述的构造，都会提供给符号引擎作为新的输入来工作，因此，它的推理闭包(closure)就会扩大，潜在地能够抵达结论(reaching the conclusion)。作者使用**集束搜索**的方法来探索由语言模型生成的、最优的k个构造(top k constructions)。~~具体的并行证明搜索算法在Methods中介绍。~~
+语言模型每生成一个上述的构造，都会提供给符号引擎作为新的输入来工作，因此，它的推理闭包(closure)就会扩大，潜在地能够抵达结论(reaching the conclusion)。作者使用**集束搜索**(beam search)的方法来探索由语言模型生成的、最优的k个构造(top k constructions)。~~具体的并行证明搜索算法在Methods中介绍。~~
 
 # Empirical evaluation
 
-一个奥赛级别的、用于几何问题的衡量指标(benchmark)
+一个奥赛级别、用于几何问题的衡量指标(benchmark)
 
 现有的奥林匹克数学的评价指标并没有完全覆盖几何领域，因为其更加关注于，通用语言中的形式化数学语言，而形式化过程(formulation)在表示(representing)几何上增加了巨大的困难(pose great challenges)。
 
@@ -191,7 +191,7 @@ Transformer语言模型是一个强大的深度神经网络，能够学习且通
 
 因为这些方法通常带来巨大的时间和存储复杂度，尤其是当处理IMO等级的问题时。所以作者在报告中展示的结果是，只要该方法能够利用已有实现之一，并且能够在48小时内解决的任何问题，都被看作是成功求解。
 
-## 2 (基于搜索的方法)
+## 2 (基于搜索的综合方法)
 
 AlphaGeometry是属于第二类方法的求解器，通常被描述为搜索的、或者公理的、或者有时是“综合的”(synthetic)方法。这些方法将定理证明的问题，视作一个逐步搜索的问题，其运用的是一个几何的公理集合。拜此所赐，他们通常会返回高度可解释的证明，对于人类读者来说也是非常易读的。
 
@@ -209,7 +209,7 @@ AlphaGeometry是属于第二类方法的求解器，通常被描述为搜索的�
 
 ## Synthetic data generation rediscovers known theorems and beyond
 
-合成数据生成重新发现已知定理并超越
+综合数据生成重新发现已知的定理并超越
 
 作者发现他们的综合数据生成能够重新发现(rediscover)一些相当复杂的(fairly complex)定理，包括一些几何学界所熟知的引理(lemmas)。如Fig. 4中所示，尽管合成数据的生成仅仅是从随机采样的定理前提开始的。
 
@@ -225,7 +225,7 @@ AlphaGeometry是属于第二类方法的求解器，通常被描述为搜索的�
 
 >Although the synthetic proof lengths are skewed towards shorter proofs, a small number of them still have lengths up to 30% longer than the hardest problem in the IMO test set.
 
-尽管综合证明长度已经朝着更短的证明被歪曲(skewed 削减)了，他们之中少部分的证明长度，仍然比IMO测试集中最难的问题要长30%。
+尽管综合证明长度已经朝着更短的证明被歪曲(skewed 削减)了，他们之中少部分的证明长度，仍然比IMO测试集中最难的问题长出30%。
 
 >We find that synthetic theorems found by this process are not constrained by human aesthetic biases such as being symmetrical, therefore covering a wider set of scenarios known to Euclidean geometry.
 
@@ -237,7 +237,7 @@ AlphaGeometry是属于第二类方法的求解器，通常被描述为搜索的�
 
 ## Language model pretraining and fine-tuning
 
-作者首先在全部一亿条综合生成的定理上训练语言模型，包括那些纯符号推理的定理。然后，作者在一个证明的子集上进行微调，这些子集的证明需要辅助构造，并且大概占了总体训练数据的9%，也就是九百万条(9 million)证明，目的是为了在整个证明搜索过程中更好地关注它被分配的任务。
+作者首先在全部一亿条综合生成的定理上训练语言模型，包括那些纯符号推理的定理。然后，作者在一个证明的子集上进行微调，这些子集中的证明需要进行辅助构造，并且大概占了总体训练数据的9%，也就是九百万条(9 million)证明，目的是为了在整个证明搜索过程中更好地关注它被分配的任务。
 
 # Proving results on IMO-AG-30
 
@@ -257,7 +257,7 @@ AlphaGeometry达到了最佳的结果，总共解决25道问题。先前最好�
 
 其他的基准，如吴法，或全角法(full-angle method)的测试结果(baseline)并没有被并行计算资源所影响，因为他们实现的是固定的(fixed)、逐步的算法，直到终止。
 
-## 3 (资源影响)
+## 3 (资源影响☆)
 
 当度量了由基本符号推理引擎(DD)所带来的效果提升之后，作者发现融合代数推理，能够多解决7道问题，而来到14道(DD+AR)，然而，语言模型的辅助构造惊人地多增加了另外11道解决的问题，结果来到总共25道。
 
@@ -301,7 +301,7 @@ AlphaGeometry达到了最佳的结果，总共解决25道问题。先前最好�
 
 AG的解答被认为应该拿到满分，因此能够通过近些年的IMO金牌门槛。作者也注意到IMO测试也同样评估人类在其他三个数学领域的表现，除几何之外，还有符合很多专为人类设计的约束(under human-centric constraints)，例如不允许使用计算器、或者4.5小时的时间限制等等。
 
-那么作者也研究了AG在4.5小时或1.5小时时间限制下的表现，在Extended Data Fig. 1中有详细的结果报告。
+那么作者也研究了AG在4.5小时或1.5小时时间限制下的表现，~~在Extended Data Fig. 1中有详细的结果报告。~~
 
 ## Learning to predict the symbolic engine’s output improves the language model’s auxiliary construction
 
