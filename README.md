@@ -18,6 +18,6 @@ random search & save
 
 # Natural Language Generation
 
-X. Li, J. Thickstun, I. Gulrajani, P. S. Liang, and T. B. Hashimoto, “Diffusion-lm improves controllable text generation,” NeurIPS
+[Diffusion-LM improves controllable text generation (NIPS.cc)](https://papers.nips.cc/paper_files/paper/2022/file/1be5bc25d50895ee656b8c2d9eb89d6a-Paper-Conference.pdf)
 
-J. Austin, D. D. Johnson, J. Ho, D. Tarlow, and R. Van Den Berg, “Structured denoising diffusion models in discrete state-spaces,” NeurIPS
+[Structured Denoising Diffusion models in discrete state-spaces (NIPS.cc)](https://proceedings.neurips.cc/paper/2021/file/958c530554f78bcd8e97125b70e6973d-Paper.pdf)
