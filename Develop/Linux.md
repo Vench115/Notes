@@ -266,3 +266,7 @@ lsb_release -a  # 显示全部信息，包括LSB、版本号、代号、版本�
 ## `nvidia-smi`
 
 命令用于查看nvidia显卡相关的信息：显存使用情况、显卡驱动版本、CUDA版本等等。
+
+## `sensors`
+
+`sensors` 命令可以用于查看系统CPU的温度，需要通过 `sudo apt install` 命令下载。然后，再通过 `watch -n 1 sensors` 来每间隔1秒监看CPU的温度状态。
