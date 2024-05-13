@@ -157,7 +157,7 @@ $$
 
 # Training a language model on synthetic data
 
-Transformer语言模型是一个强大的深度神经网络，能够学习且通过“netxt token预测”的方法来生成文本序列，助力生成式AI技术方面的大量进步。
+Transformer语言模型是一个强大的深度神经网络，能够学习且通过“next token预测”的方法来生成文本序列，助力生成式AI技术方面的大量进步。
 
 作者把 $(P,N,G(N))$ 序列化成一个文本字符串，其结构是 `<premises> <conclusion> <proof>` 。通过在这样的符号序列上进行训练，一个语言模型能够高效地学习生成证明，其条件是定理的前提以及结论。
 
