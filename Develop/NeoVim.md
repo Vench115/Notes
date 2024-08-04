@@ -2,7 +2,7 @@
 
 # 视频资源
 
-[0 to LSP：Neovim RC From Scratch_bilibili](https://www.bilibili.com/video/BV1HM4m1Z7ex/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0) 视频中提到的Packer.nvim已经不再维护
+[0 to LSP：Neovim RC From Scratch_bilibili](https://www.bilibili.com/video/BV1HM4m1Z7ex/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)：视频中提到的Packer.nvim已经不再维护
 
 [从零开始配置 Neovim(Nvim) - MartinLwx's Blog](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch/) (MacOS)
 
@@ -14,10 +14,13 @@
 
 [NvChad](https://nvchad.com/)
 
+[LazyVim for Ambitious Developers (phillips.codes)](https://lazyvim-ambitious-devs.phillips.codes/)：LazyVim官方教程
+
+[From 0 to IDE in NEOVIM from scratch FREE COURSE EP 1_bilibili](https://www.bilibili.com/video/BV1Qi421D7VT/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
 # Intro
 
-NeoVim中支持通过Lua脚本进行配置，在此之前，一般使用VimScript进行脚本配置，这继承自Vim，目前已经逐渐转向Lua。
+NeoVim中支持通过Lua脚本进行配置，曾经NeoVim一般使用VimScript进行脚本配置，这继承自Vim。但是，目前已经逐渐转向Lua。
 
 # Install
 
@@ -52,6 +55,10 @@ Windows: ~/AppData/Local/nvim/init.vim (or init.lua)
 
 nvim会在启动时，直接找到配置路径下的文件，并执行，例如 `init.lua` 文件。任何Lua中的目录都可以通过 `require()` 关键字进行引用，就如同index.html一般，括号内必须为文件名。
 
+## Tab in Vim
+
+[linux - vim技巧：详解tabstop、softtabstop、expandtab三个选项的区别 - 南木阁 - SegmentFault 思否](https://segmentfault.com/a/1190000021133524)
+
 ## WezTerm
 
 一个好看的，可以在Windows上使用的命令行工具，具体配置下载等信息可以参考 [[WezTerm]] 文档。
@@ -64,7 +71,13 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 # Plugins
 
+[Plugins | LazyVim](https://www.lazyvim.org/configuration/plugins)
+
+[A BEAUTIFUL neovim config with Lazy FREE COURSE EP 2_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Tf421d7nJ/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
+
 通过LazyVim来管理所有的插件，即管理.lua/plugins中所有的.lua插件文件即可。
+
+[Chapter 5: Plugin Basics - LazyVim for Ambitious Developers (phillips.codes)](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-5/)
 
 ## LazyVim
 
@@ -78,7 +91,6 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 如果初步的lazy.nvim.starter安装成功，那么重新启动nvim时，lazyvim会开始工作。安装lazyvim默认相关的插件时，会自动安装 telescope.nvim，一个用于模糊搜索的插件。
 
-
 # Keymaps
 
 在主界面中，使用Shift+/可以呼出按键解释菜单。或者可以通过网页：[⌨️ Keymaps | LazyVim](https://www.lazyvim.org/keymaps)查看按键映射。
@@ -87,6 +99,14 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 所以，现在 `<space>sh` 命令可以搜索 Help 文档。
 
-同时，这种设置可以通过在nvim中键入命令来执行：`:lua vim.opt.number = false` 可以将nvim中的当前行行号关闭，而转为显示0。
+同时，这种设置可以通过在nvim中键入命令来执行：`:lua vim.opt.number = false` 可以将nvim中的当前行行号关闭，而转为显示0。同样的，设置 `vim.wo.relativenumber = true` 可以开启相对行号。
 
 `: Tutor` 命令可以唤出NeoVim Tutorial，该文档被默认关闭，以节省时间。替代方案，可以在网页打开
+
+# LSP
+
+[LSP in Neovim. Thanks to BILL GATES! FREE COURSE EP 3_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV19y411h76K/?spm_id_from=333.788&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
+
+# Lint and Format
+
+[What the hell is NULL-LS FREE COURSE EP 4_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1rU411o7iF/?spm_id_from=333.788&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
