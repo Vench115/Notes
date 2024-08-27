@@ -18,7 +18,6 @@
 
 # Markdown
 
-在 Ob 中支持的文档内容格式，即Markdown文件，具体的 Markdown 格式可以在 [[Markdown学习]] 中找到。
+在 Ob 中支持的文档内容格式，即Markdown文件，具体的 Markdown 格式可以在 [[Markdown]] 中找到。
 
 Markdown 从 HTML 来，它更加精简高效，用纯文本的方式实现格式化内容的目的。其方式是用文本中的符号来实现格式化，好处是可以少用鼠标。
-
