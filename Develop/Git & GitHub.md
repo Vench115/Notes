@@ -685,6 +685,31 @@ git add <已经删除的文件名>
 
 ---
 
+# 操作映射 alias
+
+[Git Alias | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/git-alias)
+
+Alias 的创建是一个比较常见的模式，比如在 `bash` 中。Alias 被用于创建更短的命令(名)，并将其映射到更长的指令上。Alias 通过需要更少的敲击次数来执行指令，使得更高效的工作流变得可能。
+
+例如：`git checkout` 指令是一条非常常用的指令，随着时间的积累，每次执行所需要的敲击数量会持续地增加。此时，就可以创建一个 alias 来将命令 `git co` 映射为 `git checkout`，这就节省了很多的键盘敲击次数。
+
+需要注意的是，并没有直接的 `git alias` 命令。Aliases 是通过使用命令 `git config` 以及Git配置文件来创建的。如同其他配置值一样，alias 可以在局部或全局的场景下进行创建。
+
+比如如下的例子：
+
+```Shell
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+```
+
+同时，我们需要注意，使用 `git alias` 并不会改变原有的指令，在 `git co` 被创建后，`git checkout` 仍然可用。上述的 alias 是通过 `--global` 创建的，这意味着它们会被存储在Git全局的、操作系统级的配置文件。例如，在Linux中，全局配置文件位于用户的home文件夹中的 `/.gitconfig` 中。
+
+这也就意味着，我们可以直接编辑该文件夹下的文件，来配置 alias。
+
+---
+
 >[!callout]
 >以下是一些Git相关的概念
 
