@@ -2,11 +2,11 @@
 
 [【GitHour】Git教程](https://www.bilibili.com/video/BV1HM411377j/?spm_id_from=333.337.search-card.all.click)
 
-强烈推荐GitHub官方的文档，可以适时查阅使用：
+强烈推荐GitHub官方的文档，可以适时查阅使用：[GitHub Docs](https://docs.github.com/zh)
 
-[GitHub Docs](https://docs.github.com/zh)
+[Git Tutorials and Training | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials)
 
-> 记录和梳理一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
+>记录和梳理一下本地仓库与远程仓库（GitHub）的交互流程，以备不时之需。
 
 # 快速建库
 
@@ -50,7 +50,7 @@ git clone <仓库url>
 git init
 ```
 
-在Git Bash中直接键入该命令，本地仓库会完成初始化，并创建一个名为：`.git`的隐藏文件夹，可以使用命令：`ls -a`查看到。
+在Git Bash中直接键入该命令，本地仓库会完成初始化，并创建一个名为：`.git`的隐藏文件夹，可以使用命令：`ls -a` 查看到。
 
 ```shell
 git init <仓库名称>

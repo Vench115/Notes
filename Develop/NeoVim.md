@@ -1,32 +1,32 @@
->Config NeoVim from scratch
+>Configure NeoVim from scratch
 
 # 视频资源
 
-[0 to LSP：Neovim RC From Scratch_bilibili](https://www.bilibili.com/video/BV1HM4m1Z7ex/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)：视频中提到的Packer.nvim已经不再维护
+[0 to LSP：Neovim RC From Scratch_bilibili](https://www.bilibili.com/video/BV1HM4m1Z7ex/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)，视频中提到的Packer.nvim已经不再维护
 
-[从零开始配置 Neovim(Nvim) - MartinLwx's Blog](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch/) (MacOS)
+[从零开始配置 Neovim(Nvim) - MartinLwx's Blog](https://martinlwx.github.io/zh-cn/config-neovim-from-scratch/)，for MacOS
 
 [glepnir/nvim-lua-guide-zh](https://github.com/glepnir/nvim-lua-guide-zh)
 
-[Neovim从新手到高手系列之轻松安装LazyVim](https://www.bilibili.com/video/BV1uE421u7xE/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0) (Linux)
+[Neovim从新手到高手系列之轻松安装LazyVim](https://www.bilibili.com/video/BV1uE421u7xE/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0) ，for Linux
 
 [The Only Video You Need to Get Started with Neovim (youtube.com)](https://www.youtube.com/watch?v=m8C0Cq9Uv9o&t=11s)
 
 [NvChad](https://nvchad.com/)
 
-[LazyVim for Ambitious Developers (phillips.codes)](https://lazyvim-ambitious-devs.phillips.codes/)：LazyVim官方教程
+[LazyVim for Ambitious Developers (phillips.codes)](https://lazyvim-ambitious-devs.phillips.codes/)，LazyVim官方推荐教程
 
 [From 0 to IDE in NEOVIM from scratch FREE COURSE EP 1_bilibili](https://www.bilibili.com/video/BV1Qi421D7VT/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
 # Intro
 
-NeoVim中支持通过Lua脚本进行配置，曾经NeoVim一般使用VimScript进行脚本配置，这继承自Vim。但是，目前已经逐渐转向Lua。
+NeoVim中支持通过Lua脚本进行配置，在此之前，NeoVim一般使用VimScript进行脚本配置，这继承自Vim。但是，目前NeoVim的配置已经逐渐转向使用Lua。
 
 # Install
 
 在NeoVim的官网：[Home - Neovim](https://neovim.io/)，下载NeoVim。解压缩后，可以得到可运行的NeoVim，它是一个基于Qt的程序。
 
-完成之后，将安装目录下的 `\bin` 文件夹添加至系统环境变量中，便于在任意目录下使用 `nvim` 直接在命令行中打开NeoVim。
+完成之后，将安装目录下的 `\bin` 文件夹添加至系统环境变量中，以便于在任意目录下使用 `nvim` 直接在命令行中打开NeoVim。
 
 通过在NeoVim中运行命令 `:lua require("xxx")` 发现，好像NeoVim并不需要在Lua环境下进行工作。而且其配置文件，在Windows系统中需要位于目录：
 
@@ -35,7 +35,7 @@ C:/Users/xxx/AppData/Local/nvim
 C:/Users/xxx/AppData/Local/nvim-data
 ```
 
-在Linux系统中，配置文件的位置涉及到 `XDG_CONFIG_HOME` 、`XDG_CONFIG_DIRS` 等系统环境变量的具体位置值。
+在Linux系统中，配置文件的位置涉及到 `XDG_CONFIG_HOME` 、`XDG_CONFIG_DIRS` 等系统环境变量的具体位置的值。
 
 # Config
 
@@ -49,11 +49,11 @@ Windows: ~/AppData/Local/nvim/init.vim (or init.lua)
 |$XDG_CONFIG_HOME|: $XDG_CONFIG_HOME/nvim/init.vim	(or init.lua)
 ```
 
-在对应的目录中，就可以写入我们需要的 .vim 或 .lua 配置文件。(%HOME% = ~/AppData/Local)
+在对应的目录中，就可以写入我们需要的 .vim 或 .lua 配置文件。(`%HOME% = ~/AppData/Local`)
 
-`:checkhealth` 或`LazyHealth` 命令让nvim自己检测自身，以及插件等等。
+使用 `:checkhealth` 或`:LazyHealth` 命令让nvim自己检测自身可用性，插件、完整性等等。
 
-nvim会在启动时，直接找到配置路径下的文件，并执行，例如 `init.lua` 文件。任何Lua中的目录都可以通过 `require()` 关键字进行引用，就如同index.html一般，括号内必须为文件名。
+NeoVim会在启动时，直接找到配置路径下的文件并执行，例如 `init.lua` 文件。任何Lua中的目录都可以通过 `require()` 关键字进行引用，该特性就如同index.html一般，括号内必须为文件名。
 
 ## Tab in Vim
 
@@ -61,7 +61,7 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 ## WezTerm
 
-一个好看的，可以在Windows上使用的命令行工具，具体配置下载等信息可以参考 [[WezTerm]] 文档。
+一个好看的、强大的、可以在Windows上使用的命令行工具，具体配置下载等信息可以参考 [[WezTerm]] 文档。
 
 ## Python
 
@@ -75,7 +75,7 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 [A BEAUTIFUL neovim config with Lazy FREE COURSE EP 2_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Tf421d7nJ/?spm_id_from=333.880.my_history.page.click&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
-通过LazyVim来管理所有的插件，即管理.lua/plugins中所有的.lua插件文件即可。
+通过LazyVim来管理所有的插件，即管理 `.lua/plugins` 中所有的.lua插件配置文件即可。
 
 [Chapter 5: Plugin Basics - LazyVim for Ambitious Developers (phillips.codes)](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-5/)
 
@@ -83,7 +83,7 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 ~~[wbthomason/packer.nvim: A use-package inspired plugin manager for Neovim.](https://github.com/wbthomason/packer.nvim)~~
 
-在0 to LSP的视频中提到，使用 `packer.nvim` (~~[packer.nvim: A use-package inspired plugin manager for Neovim.](https://github.com/wbthomason/packer.nvim)~~)进行nvim的插件管理，但是其已经不再被维护，也有了更好更稳定的替代者：`LazyVim` 。
+在0 to LSP的视频中提到，使用 `packer.nvim` (~~[packer.nvim: A use-package inspired plugin manager for Neovim.](https://github.com/wbthomason/packer.nvim)~~)进行nvim的插件管理，但是该工具已经不再被维护，也有了更好更稳定的替代者：LazyVim。
 
 [🛠️ Installation | LazyVim](https://www.lazyvim.org/installation)
 
@@ -99,11 +99,13 @@ nvim会在启动时，直接找到配置路径下的文件，并执行，例如 
 
 所以，现在 `<space>sh` 命令可以搜索 Help 文档。
 
-同时，这种设置可以通过在nvim中键入命令来执行：`:lua vim.opt.number = false` 可以将nvim中的当前行行号关闭，而转为显示0。同样的，设置 `vim.wo.relativenumber = true` 可以开启相对行号。
+同时，这种设置可以通过在nvim中键入命令来执行：`:lua vim.opt.number = false` 可以将nvim中的当前行的行号关闭，转换为显示0。同样的，设置 `vim.wo.relativenumber = true` 可以开启相对行号。
 
-`: Tutor` 命令可以唤出NeoVim Tutorial，该文档被默认关闭，以节省时间。替代方案，可以在网页打开
+`:Tutor` 命令可以唤出NeoVim Tutorial，该文档被默认关闭，以节省时间。替代方案，可以在网页打开
 
 # LSP
+
+>Language Server Protocol
 
 [LSP in Neovim. Thanks to BILL GATES! FREE COURSE EP 3_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV19y411h76K/?spm_id_from=333.788&vd_source=5c0fccc3e62acb7264f3cd05395b00c0)
 
