@@ -10,6 +10,8 @@ In his words the technique below requires:
 
 这个配置文件管理的技巧，包含存储一个Git裸仓库，在一个辅助(side)文件夹中，例如 `$HOME/.cfg` 或 `$HOME/.myconfig` ，只需要使用一个精心编写的 `alias` ，就可以让指令在仓库上运行，而不是在常规的 `.git` 文件夹上运行，那样会干扰周围的其他任何Git仓库。
 
+[Dotfiles 管理-使用 git 裸仓库 - 晨鹤部落格 (chenhe.me)](https://chenhe.me/post/dotfiles-guan-li-shi-yong-git-luo-cang-ku)
+
 # Git Bare Repository
 
 >Git裸仓库
