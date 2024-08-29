@@ -34,7 +34,7 @@ git init --bare $HOME/.cfg`
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 ``` 
 
-创建一个 `alias` 的 `config` 取代我们往常与配置文件仓库交互时所使用的 `.git` 。
+创建一个 `alias` 的 `config` (命令)取代我们往常与配置文件仓库交互时所使用的 `.git` 。
 
 ```Shell
 config config --local status.showUntrackedFiles no
