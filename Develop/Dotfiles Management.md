@@ -1,5 +1,7 @@
 # Intro
 
+Dotfiles 代指 Linux/Mac 中各种配置文件。我们希望有一个方法可以集中管理它们，便于在切换不同机器时，能快速恢复熟悉的工作环境。目前比较流行的做法是 [使用 git 来管理](https://dotfiles.github.io/)，借助 orphan branch 还可以给不同系统/机器建立不同的分支，分开管理。
+
 [How to Store Dotfiles - A Bare Git Repository | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/dotfiles)
 
 Perfect technique to mange config dotfiles, learned from [[NeoVim]]. And the only pre-requisite is install Git.
@@ -10,7 +12,15 @@ In his words the technique below requires:
 
 这个配置文件管理的技巧，包含存储一个Git裸仓库，在一个辅助(side)文件夹中，例如 `$HOME/.cfg` 或 `$HOME/.myconfig` ，只需要使用一个精心编写的 `alias` ，就可以让指令在仓库上运行，而不是在常规的 `.git` 文件夹上运行，那样会干扰周围的其他任何Git仓库。
 
-[Dotfiles 管理-使用 git 裸仓库 - 晨鹤部落格 (chenhe.me)](https://chenhe.me/post/dotfiles-guan-li-shi-yong-git-luo-cang-ku)
+# 学习资源
+
+[Dotfiles 管理-使用 git 裸仓库 - 晨鹤部落格](https://chenhe.me/post/dotfiles-guan-li-shi-yong-git-luo-cang-ku)，汉化版，同样是在Linux中的实现方法。
+
+利用 git 裸仓库。它可以在**原地**跟踪Dotfiles，无需移动，自然也无需软链接。此方案来源 (YouTube)：[Git Bare Repository - A Better Way To Manage Dotfiles](https://www.youtube.com/watch?v=tBoLDpTWVOM)，讲解清晰。
+
+GNU Stow (YouTube - typecraft)：[NEVER lose dotfiles again with GNU Stow (youtube.com)](https://www.youtube.com/watch?v=NoFiYOqnC4o&t=69s)
+
+不过，在 `Windows` 系统中，没有 `alias` 命令，需要寻找替代方案。Maybe，在多种平台上进行配置文件管理的软件：[chezmoi - Quick Start](https://www.chezmoi.io/quick-start/)
 
 # Git Bare Repository
 
@@ -36,7 +46,7 @@ git init --bare $HOME/.cfg`
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 ``` 
 
-创建一个 `alias` 的 `config` (命令)取代我们往常与配置文件仓库交互时所使用的 `.git` 。
+创建一个 `alias` 的 `config` (命令)取代我们往常与配置文件仓库交互时所使用的 `git` 。其中，`config` 依然会使用 `git` ，不过 `config` 会指定交互仓库的工作目录为：`$HOME/.cfg/` ，也就是我们用于同步的裸仓库位置。而整个工作目录则是 `$HOME`，也就是说，我们可以同步工作目录中，所有我们需要的 `dotfiles` 。
 
 ```Shell
 config config --local status.showUntrackedFiles no
@@ -71,7 +81,7 @@ config commit -m "Add bashrc" config push
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 ```
 
-而且，为了使我们的源仓库 (source repository) 忽略我们即将要克隆到它的文件夹中的文件，所以我们可以运行下列命令行，以便于我们不会引发奇怪的递归问题：
+而且，为了使我们的源仓库 (source repository) 忽略我们即将要克隆到它的文件夹中的文件，所以我们可以运行下列命令行，以便于我们不会引发奇怪的递归问题
 
 ```Shell
 echo ".cfg" >> .gitignore
