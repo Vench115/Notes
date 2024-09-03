@@ -6,9 +6,13 @@
 
 大致来说，`chezmoi` 会把我们的 `dotfiles` 的期望状态存储在目录：`~/.local/share/chezmoi` 中。当运行 `chezmoi apply` 命令时，chezmoi 会计算我们每一个配置文件所需的内容，然后做出最小的更改，使得我们的 dotfiles 匹配我们所需的状态。
 
-在Windows中，存储目录位于：`Users/.local/share/chezmoi`
+在Windows中，存储目录位于：
+
+- `Users/.local/share/chezmoi`
+- `C:\Users\<user>\.local\share\chezmoi`
 
 # Preparation
+
 ## Install
 
 [Releases · twpayne/chezmoi (github.com)](https://github.com/twpayne/chezmoi/releases)
@@ -25,7 +29,13 @@
 
 [Quick start - chezmoi](https://www.chezmoi.io/quick-start/)
 
-在安装完成，添加完系统变量后，直接运行命令 `chezmoi init` 进行初始化。该命令会创建一个新的本地 git 仓库，位于 `~/.local/share/chezmoi` ，在这里chezmoi会存储它的源数据。默认情况下，chezmoi只会修改工作副本中的文件。
+在安装完成，添加完系统变量后，直接运行命令
+
+```Shell
+chezmoi init
+```
+
+进行初始化。该命令会创建一个新的本地 git 仓库，位于 `~/.local/share/chezmoi` ，chezmoi会在该目录中存储它的源数据。默认情况下，chezmoi只会修改工作副本中的文件。
 
 与 git 类似，chezmoi可以通过以下命令添加文件：
 
@@ -43,11 +53,13 @@ chezmoi add ~/.bashrc
 chezmoi --help
 ```
 
-直接在命令行中输入，可以查看所有相关的、具体命令的名称和内容。
+上述命令可以查看所有chezmoi相关的、具体命令的名称和内容。
 
 # Commands
 
-首次与仓库进行同步，可以使用命令组：
+[Command overview - chezmoi](https://www.chezmoi.io/user-guide/command-overview/)
+
+首次与仓库进行同步时，在完成 `chezmoi init` 的情况下，可以使用命令组：
 
 ```Shell
 chezmoi cd # 打开工作chezmoi文件目录
