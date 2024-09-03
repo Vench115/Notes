@@ -8,7 +8,7 @@
 
 # Abstract
 
-作者努力共建了一个几何推理数据库(A Geometry Deductive Database)，能够用于寻找一个几何构型(Geometric Configuration)中的不动点(fixpoint)。该系统能够找到构型中，能够利用一个固定的几何规则集合所推导出的所有性质(properties)。为了控制数据库的大小，作者提出了一个结构化推理数据库(Structured Deductive Database)的构想。
+作者努力构建了一个几何推理数据库(A Geometry Deductive Database)，能够用于寻找一个几何构型(Geometric Configuration)中的不动点(Fixpoint)。该系统能够找到构型中，利用一个固定的几何规则集合所推导出的所有性质(properties)。为了控制数据库的大小，作者提出了一个结构化推理数据库(Structured Deductive Database)的构想。
 
 作者的实验显示，这种技术能够上百倍地减少数据库的大小。作者也提出了基于数据的搜索策略，来改进前向链接法的效率。作者也在几个问题上取得了明显的进步，包括：
 
