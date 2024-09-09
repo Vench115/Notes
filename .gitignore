@@ -1,0 +1,9 @@
+# git config
+# .gitconfig
+/.git
+
+# config content
+/.obsidian
+
+# Special file
+/Untracked
