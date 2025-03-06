@@ -218,13 +218,166 @@ $$
 
 PPM是从微调的策略模型中初始化的，而模型中的next-token预测头被替换为一个张量-值头(scalar-value head)，包含一个线性层以及一个tanh函数来将输出值限制在\[-1,1\]之内。
 
-作者筛选掉了那些所有解答轨迹都完全正确，或者完全不正确的问题。对于有混合结果的问题来说，作者基于Q值，对每一个步骤，都选择两个正的和两个负的例子，而这些例子则作为偏好对，用作训练数据。
+作者筛选掉了那些所有解答轨迹都完全正确，或者完全不正确的问题。对于有混合结果的问题来说，作者基于Q值，对每一个步骤，都选择两个正的和两个负的例子，而这些例子则作为偏好对，作为训练数据。
 
-#### 3.4.1.4 Recipe for Self-Evolution
+### 3.4.2 Recipe for Self-Evolution
 
-由于SLMs的能力更弱，作者进行了四轮的深度思考，来逐渐地生成更高质量的数据，并且用更加具有挑战性的数学问题来扩展训练数据集。
+由于SLMs的能力普遍更弱，作者进行了四轮的深度思考，来逐渐地生成更高质量的数据，并且用更加具有挑战性的数学问题，来扩展训练数据集。
 
 - Table 2：747k数学问题在每一轮中正确求解的百分比。只有那些有正确解答的问题会被囊括进训练集中。第一轮使用DeepSeek-Coder-Instruct作为策略LLM，而后续的轮次会使用作者微调过的7B策略SLM。
 - Table 3：最终的策略SLM在每一轮的 Pass@1 准确度，展现出持续的改进，直到超越最初的模型(bootstrap model)。
 
-每一轮都使用MCTS
+每一轮都使用MCTS来生成逐步验证的推理轨迹，随后，这些轨迹被用于训练新的策略SLM和PPM。训练后的新模型将应用在下一轮，以生成更高质量的训练数据。Fig. 1(c)和Table 2详细列出了在每一轮中，用于数据生成的模型细节，包括训练后的策略模型和PPM的标识符。接下来，作者将概述每一轮的具体改进目标和实现细节。
+
+#### Round 1: Bootstrapping an initial strong policy SLM-r1
+
+为了使得SLMs能够自生成相对较好的(reasonably good)训练数据，作者进行了一个引导轮次(bootstrap)，来微调一个初始就很强的策略模型，标记为SLM-r1。如Table 2所示，作者用DeepSeek-Coder-V2-Instruct (236B)来运行MCTS，并收集SFT数据。
+
+这一轮中，没有可用的奖励模型，作者用终端引导的标注来赋予Q值，并为了效率，限制MCTS只进行8次模拟。为了正确的解答，top-2的含有最高平均Q值的轨迹，被选为SFT数据。作者也训练了PPM-r1，但是受限的模拟产生了不可靠的Q值，影响了PPM-r1的有效性。
+
+#### Round 2: Training a reliable PPM-r2
+
+在这一轮中，随着模型更新到7B SLM-r1，作者进行了大量的MCTS模拟，为的是更加可靠的Q值标注，以及训练首个可靠的奖励模型，PPM-r2。具体来说，作者对每个问题，都进行16次MCTS模拟。
+
+最终得到的逐步验证的推理轨迹，在质量和Q值预测上，都展现出了显著的提高。如Table 4所示，PPM-r2比初始轮中的模型，是更加显著有效的。不仅如此，策略SLM-r2也如预期一样，在持续地改进。(Table 3)
+
+#### Round 3: PPM-augmented MCTS to significantly improve data quality
+
+有了可靠的PPM-r2，作者在这一轮中，运行PPM增强的MCTS来生成数据，导向了更高质量的轨迹，能在训练集中(Table 2)，够覆盖更多数学和奥赛级别的问题。然后，这些生成的推理轨迹和自标注的Q值，都被用于训练新的策略SLM-r3和PPM-r3，这两个模型都展现出了显著的改进。
+
+#### Round 4: Solving challenging math problems
+
+在第三轮之后，在小学和MATH问题都能达到很高的成功求解率时，只有62.16%的奥赛级问题被包括进了训练集。这不仅仅是由于作者采用的SLMs较弱的推理能力，也因为很多奥赛级别的问题仍然不能被GPT-4或o1所解决。
+
+为了改进覆盖率，作者采纳了一个直截了当的策略。对于那些16轮MCTS模拟之后还不能求解的问题，作者会进行一次额外的64次的模拟，而且如果需要的话，可以提升到128次模拟。作者也用不同的随机种子进行了多重MCTS树扩展。这促使奥赛级别的求解率暴增至80.58%。
+
+在四轮的自进化之后，747k数学问题中的90.25%能够被成功地覆盖进训练集中，如Table 2所示。在还不能求解的问题之中，极大比例的问题包含综合问题(synthetic questions)。作者人工地审核了随机采样的20个问题，并发现19个都用错误的答案进行了不正确地标记。基于此，作者能得出结论：剩下的不能解决的问题质量很低，而且因此就在第四轮的自进化中被终止了。
+
+Table 4：PPM的质量随着轮次的增加，持续地改进。策略模型已经被固定为策略SLM-r1为了一个更加公平的对比。
+
+# 4 Evaluation
+
+## 4.1 Setup
+
+### 4.1.1 Evaluation Datasets
+
+作者在多样的数学基准测试上评估了rStar-Math。在广泛使用的GSM8K基础之上，作者从多个领域囊括进了更有挑战性的基准测试：
+
+1. 竞赛和奥赛基准测试，例如MATH-500、AIME 2024、AMC 2023、以及奥赛指标。具体来说，AIME是专为挑战美国最聪明的高中数学学生而设计的，2024数据集中包含了30道来自于AIME $I$ 和 $II$ 测试的题目；
+2. 从College Math中收集的大学级别的数学问题；
+3. 以及领域外的数学评价指标：GaoKao En 2023 (中国高考)。
+
+### 4.1.2 Base Models and Setup
+
+rStar-Math是一个通用的方法，对于多种LLMs都是可用的。为了展现其有效性和普适性，作者使用不同大小的SLMs作为基准策略模型：
+
+- Qwen2.5-Math-1.5B
+- Phi3-mini-Instruct (3B)
+- Qwen2-Math-7B
+- Qwen2.5-Math-7B
+
+在这些模型中，Phi3-mini-Instruct是一个通用的SLM，在数学推理上并没有专长。
+
+由于有限的GPU资源，作者单独在Qwen2.5-Math-7B上，进行了四轮的自进化，产出了4个完成进化的策略SLMs(Table 3)以及4个PPMs(Table 4)。对于其他3个策略LLM，作者使用由Qwen2.5-Math-7B第四轮生成的，逐步验证的轨迹来微调它们。然后，从这一轮生成的最终的PPM被用作3个策略SLMs的奖励模型。
+
+### 4.1.3 Baselines
+
+rStar-Math 是一种System 2方法。作者将其与代表System 1和System 2方法的三类很强的基准进行了对比：
+
+1. 前沿LLM：包括GPT-4o、最新版的Claude、OpenAI的o1-preview和o1-mini。作者通过AMC 2023、奥赛测试、College Math、GaoKao和GSM8K等基准测试来衡量它们的准确性，其他基准的准确率数据来自公开的技术报告。
+2. 开源的强大的推理模型：包括DeepSeek-Coder-V2-Instruct、Mathstral、NuminaMath-72B和LLaMA3.1，这些模型代表了当前，提升大语言模型数学推理能力的主流System 1方法。
+3. 原始模型团队训练的基础模型的System 1和System 2性能，包括它们的Instruct版本（比如Qwen2.5-Math-7B-Instruct）和Best-of-N采样策略（比如Qwen2.5-Math-72B-Instruct + Qwen2.5-Math-RM-72B）。值得注意的是，用于三个Qwen基础模型的奖励模型，是72B参数规模的ORM(输出奖励模型)，显著大于作者采用的7B参数PPM。
+
+### 4.1.4 Evaluation Metric
+
+作者报告了所有基准模型的 Pass@1 准确度。对于System 2基准，作者使用了默认的评估设置，比如：o1-mini和o1-preview的默认思考时间。对于使用Best-of-N的Qwen模型，作者重新评估了MATH-500、AIME/AMC的准确度；其他基准评估的结构都来自于他们的技术报告。
+
+为了公平对比，rStar-Math运行MCTS来生成与Qwen相同数量的解答。具体来说，对于AIME/AMC，作者对AIME/AMC生成了16条轨迹，对于其他基准评估则生成8条，并使用PPM来选择最佳的解答。作者也报告了使用64条轨迹，使用更多测试时间计算的性能结果，在表中标记为 $rStarMath^{64}$。
+
+## 4.2 Main Results
+
+### 4.2.1 Results on diverse challenging math benchmarks
+
+Table 5展示了rStar-Math的结果，对比的是SOTA的推理模型。作者高亮了三个关键的观察结果：
+
+1. rStar-Math显著地改善了SLMs的数学推理能力，达到了能够跟OpenAI o1相抗衡甚至超越o1的性能，而模型的大小是明显更小的(1.5B-7B)。
+
+例如，Qwen2.5-Math-7B，初始在MATH上的准确率为58.8%，用rStar-Math大幅度改善到了90.0%，超越了o1-preview和Claude 3.5 Sonnet，同时比肩o1-mini。在College Math基准测试上，rStar-Math超越o1-mini 2.7%。在AIME 2024上，rStar-Math得分53.3%，排名仅次于o1-mini，仅7B大小的模型解决了AIME $I$ 和 $II$ 中8/15道题，在最聪明的高中数学学生中排名前20%。
+
+需要注意的是，8道没有解决的问题中是基于几何的，需要视觉上的理解，而这种能力是rStar-Math所暂时不支持的。
+
+2. 尽管使用了更小的策略模型(1.5B-7B)和奖励模型(7B)，rStar-Math显著地超越了SOTA的System 2基准。
+
+相比于Qwen Best-of-N基准，它使用的是相同的基础模型(Qwen2-Math-7B, Qwen2.5-Math-1.5B/7B)，但是一个大十倍的奖励模型(Qwen2.5-Math-RM-72B)，rStar-Math稳定地将所有基础模型的推理准确度，提升到了SOTA的水平。
+
+甚至在对抗Best-of-N这种有10倍更大的Qwen2.5-Math-72B-Instruct策略模型，rStar-Math在除了GSM8K的基准测试上都超越了它，而且是在使用相同数量的采样的解答情况下。
+
+3. 在众所周知的测试基准如：MATH, GSM8K和AIME以外，这些数据集容易发生过拟合的风险，rStar-Math在其他有挑战性的数学基准测试上，展现出了强大的泛化性能，包括Olympiad Bench, College Math, Chinese College Entrance Math Exam (Gaokao)，创造了新的SOTA分数标杆。
+
+如Section 3.4中讨论过的，作者的训练集主要来源于公开数据集，对于这些测试基准，并没有任何专门的优化。
+
+> Table 5：呈现了rStar-Math和其他前沿LLMs在最具挑战性的数学基准测试上的结果。$\text{rStar-Math}^{64}$ 呈现的则是在采样64条轨迹下的 Pass@1 准确率。
+
+### 4.2.2 Scaling up test-time computation
+
+rStar-Math使用MCTS来增强策略模型，在PPM的引导下，搜索解答。通过提高测试时间的计算，它会探索更多的轨迹，潜在地提升性能。
+
+在Fig. 3中，作者展示了增加测试时间计算的影响，通过对比官方Qwen Best-of-N的准确率，在四个有挑战性的数学基准测试上，使用不同数量的采样轨迹。只采样一条轨迹，与策略LLM的 Pass@1 准确率相关，显示出在System 1推理上的下降(fallback)。
+
+作者高亮了两个关键的观察结果：
+
+1. 在只有4条轨迹下，rStar-Math显著地超越了Best-of-N基准，超越了o1-preview并且接近o1-mini，展示出它的有效性。
+2. 增加测试时间计算，在所有的基准评估中都改善了推理准确度，尽管有一些不同的趋势。在Math, AIME, Olympiad Bench上，rStar-Math展现出饱和，或者在64条轨迹上展现出非常缓慢的改进。然而，在College Math上，性能仍然在持续稳定地改进。
+
+## 4.3 Ablation Study and Analysis
+
+作者通过笑容实验验证了他们的耽搁主要创新的有效性。针对System 2式推理，AIME和AMC基准测试的 Pass@ 1 准确率采用16条推理轨迹进行计算，而对其他基准测试则使用8条轨迹。
+
+> Table 6：展现了通过rStar-Math自进化的深度思考，而持续改善的数学推理能力。从第2轮开始，由rStar-Math增强的7B基础模型超越了GPT-4o。
+
+### 4.3.1 The effectiveness of self-evolution
+
+在Table 5中的令人折服的结果，是通过四轮的rStar-Math自进化的深度思考得到的。Table 6展现了每一轮中的数学推理性能，呈现出在准确度上的持续改进。
+
+在第1轮，主要的提升来自于对基础模型应用了SFT。第2轮，则通过在MCTS中应用了一个更强的PPM得到了显著的增强，而这解锁了System 2深度思考的全部潜力。值得注意的是，从第2轮开始，rStar-Math就超越了GPT-4o。第3第4轮则展出是更进一步的提升，由更强的System 2推理驱动，通过更优秀的策略SLMs和PPMs。
+
+### 4.3.2 The effectiveness of step-by-step verified reasoning trajectory
+
+rStar-Math生成了逐步验证的推理轨迹，能够消除错误的中间步骤，并进一步用具有挑战性的问题扩展数据集。为了评估它的有效性，作者使用从第4轮生成的数据，作为SFT训练数据，并将其与3个强大的基准进行对比：
+
+1. GPT-distillation，包括了开源的CoT解答，利用GPT-4进行合成，例如MetaMath, NuminaMath-CoT；
+2. 从自生成中随机采样，使用相同的策略模型（如SLM-r3），来随机地升成轨迹；
+3. 拒绝采样(Rejection sampling)，其中32条轨迹是从策略模型中随机采样得到的，并通过作者训练的ORM(Appendix A.1中提到)进行高质量解答排序。
+
+公平起见，作者对每一道数学问题都选择了两个正确的轨迹，在上述基准模型2和3中。所有的SFT实验，都是用相同的训练方法。
+
+Table 7展现了：在不同数据集上进行微调的Qwen2.5-Math-7B的数学推理准确度。作者高亮了两个观察结果：
+
+1. 通过作者的提出的，逐步验证的轨迹进行微调，可以显著地超越所有其他基准模型。这主要由于我们的PPM增强的MCTS，用于代码增强的CoT合成，这个过程在数学解答生承重，提供了密度更大的验证。它证明了，相比于随机采样（缺乏验证）和拒绝采样（ORM只提供稀疏的验证）都要更加有效；
+2. 即使是从作者的SLM升成的，随机采样的代码增强的CoT解答，也产出了能够比肩，甚至超越GPT-4合成的Numina-Math和MetaMath数据集的性能。这就表明：作者的策略SLMs，在自进化几轮过后，能够升成高质量的数学解答。这些结果展现了作者方法巨大的潜力，能够在不依赖于高级LLM蒸馏的情况下，自生成更高质量的推理数据。
+
+> Table 7：作者的逐步验证的推理轨迹，作为SFT数据集的有效性的消融实验。作者报告了用不同数据集微调的Qwen2.5-Math-7B的SFT准确率。
+
+### 4.3.3 The effectiveness of PPM
+
+作者同时训练了一个强大的ORM和Q值基于评分的PRM(PQM)用于对比。为了保证公平的评估，作者使用了最高质量的训练数据：在第4轮中升成的逐步验证的轨迹，包含那些能够媲美用于PPM训练的，精挑细选的数学问题。
+
+与PPM类似，作者使用步骤级的Q值，来针对每一个数学问题，选择正和负轨迹。ORM是用一个成对的排序损失进行训练的，而PQM这遵循文章\[Chen et al. 2024\]，来使用Q值作为奖励标签，并用MSE损失进行优化。细节的训练数据在Appendix A.1中提供。
+
+> Table 8：奖励模型的消融实验。过程奖励模型(PQM和PPM)超越了ORM，PPM则继续推荐数学推理能力的边界。
+
+Table 8对比了ORM, PQM, PPM的性能，使用作者的最终轮次的策略模型进行System 2推理。ORM尽在问题求解的最后提高奖励信号，因此，作者使用了Best-of-N方法，而PRM和PPM则使用的是MCTS驱动的搜索。
+
+如Table 8所示，PQM和PPM都超越了ORM，通过提供更密集的步骤级奖励信号，在复杂的数学推理任务上导向了更高的准确度。然而，PQM却在更加有挑战性的评估指标上受阻，例如MATH和Olympiad Bench，由于Q值固有的不准确。作为对比，PPM构建了步骤级的偏好数据用于训练，使得作者的7B策略模型，在所有的测试基准上，达到了与o1-mini不相上下或者更好的性能。
+
+# 5 Findings and Discussions
+
+## 5.1 The emergence of intrinsic self-reflection capability
+
+在OpenAI o1中的一个关键突破，是它内在的自我反思能力(self-reflection)。当模型犯错时，它会识别到错误，并能够通过一个正确的答案来自我纠正。然而，研究者一直发现，在开源的LLM中，这种方法基本上是无效的。社区里也一直在积极地探索各种各样的方法，包括自我纠正\[Huang et al\]，自我反思\[Renze and Guven\]，来显式地训练，或者提示LLMs来开发出这种能力。
+
+在作者的实验中，他们出人意料地观察到：他们的MCTS驱动的深度思考，在问题求解阶段展现出了自我反思。如Fig. 4所示，模型一开始会在前三步中，使用SymPy形成一个方程，这就回导向一个错误的答案(左分支)。有趣的事，在第四步(右分支)，策略模型分辨出了它前期步骤的低质量情况，并避免继续沿着初始问题求解路径前进。取而代之的是，模型回溯，并使用一个全新的、更简单的方法解决了问题，最终抵达了正确答案。一个额外的自我纠正的例子，在Appendix A.2中提供。
+
+> Notably, no self-reflection training data or prompt was included, suggesting that advanced System 2 reasoning can foster intrinsic self-reflection.
+
+值得注意的是，没有关于自我反思的训练数据，或者提示词被提供给模型，表明更高级的System 2推理能够培养出内在的自我反思。
