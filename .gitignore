@@ -1,4 +1,3 @@
-# git config
 # .gitconfig
 /.git
 
@@ -7,3 +6,4 @@
 
 # Special file
 /Untracked
+/Excalidraw/Scripts
