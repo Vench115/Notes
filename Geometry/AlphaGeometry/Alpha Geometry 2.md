@@ -1,16 +1,9 @@
-[[2502.03544] Gold-medalist Performance in Solving Olympiad Geometry with AlphaGeometry2](https://arxiv.org/abs/2502.03544)
+[Gold-medalist Performance in Solving Olympiad Geometry with AlphaGeometry2](https://arxiv.org/abs/2502.03544)
 
-[AlphaGeometry2: Deepmind AI outperforms math Olympians at geometry tasks](https://the-decoder.com/alphageometry2-deepmind-ai-outperforms-math-olympians-at-geometry-tasks/)
+# 0. Improvements
 
-> Another interesting finding is that language models pre-trained on mathematical datasets and then refined on AlphaGeometry data acquire slightly different abilities than those trained from scratch. Although both learn on the same data, they develop complementary strengths. By combining these models in a new search algorithm called SKEST (Shared Knowledge Ensemble of Search Trees), the solution rate can be further increased.
-
-另一个有趣的发现是：先在数学数据集上预训练，然后在AG的数据上进行优化的语言模型，与从零开始训练的模型相比，获得了相比之下略微不同的能力。尽管两者都在相同的数据上进行学习，但它们发展出了互补的(complementary)优势。通过将这些模型组合在一个名为SKEST（搜索树的共享知识集成， Shared Knowledge Ensemble of Search Trees）的新搜索算法中，解题率可进一步提高。
-
-> As far as can be seen from the work, the language models used have not yet been trained as reasoning models with the currently used RL methods - further performance improvements are therefore possible. It is therefore likely that the next version will rely more heavily on reasoning models and may reduce the role of the symbolic engine, at least experimentally.
-
-目前，从这篇工作中所能看到的情况来看，作者使用的语言模型，并未用到最近被广泛采用的强化学习方法，作为推理模型进行训练——性能还有进一步提升的可能。因此，下个版本很可能会更多地依赖推理模型，并且至少在实验阶段可能会减少符号引擎的作用。
-
-因此，这个用于展示神经符号人工智能性能的示例系统的工作，也反映了当前人工智能研究中的一个核心争论：深度学习模型能否可靠地进行推理？或者更确切地说：像大型LLM这样的生成式transformer模型，能否学会可靠地推理？虽然AG2清晰地展示了神经-符号系统的优势，但该团队对大型语言模型作用的见解，并没有给出一个明确的答案。
+- 略微的改进？
+- 其他的改进在哪里？
 
 # Abstract
 
@@ -30,7 +23,7 @@ IMO对于全世界的高中生来说，都是一个享誉盛名的数学竞赛�
 
 ## Approaches
 
-自动化求解几何问题，主要有两种技术路径。一种，是用代数方法“痛击”(bashing)问题，利用比如“吴法”；面积法；或者Grobner基方法。另一种，则依赖于合成技巧(synthetic techniques)，例如：推理数据库、或全角法。作者更关注于后者，作为一种更加与人类相似的方法路径，也适合于将研究知识转移到其他领域。在作者先前的工作中，作者提出了AlphaGeometry(AG1)，一个神经-符号系统，展现了完全统治(mastering)该领域的一大步，达到了在2000-2024全部IMO几何问题上54%的求解率。AG1结合了一个语言模型和一个符号引擎，来有效地解决这些极具挑战性的问题。
+自动化求解几何问题，主要有两种技术路径。一种，是用代数方法“痛击”(bashing)问题，利用比如“吴法”；面积法；或者Grobner基方法。另一种，则依赖于综合的技巧(synthetic techniques)，例如：推理数据库、或全角法。作者更关注于后者，作为一种更加与人类相似的方法路径，也适合于将研究知识转移到其他领域。在作者先前的工作中，作者提出了Alpha Geometry (AG1)，一个神经-符号系统，展现了完全统治(mastering)该领域的一大步，达到了在2000-2024全部IMO几何问题上54%的求解率。AG1结合了一个语言模型和一个符号引擎，来有效地解决这些极具挑战性的问题。
 
 ## AG1 Limitations
 
@@ -40,7 +33,7 @@ IMO对于全世界的高中生来说，都是一个享誉盛名的数学竞赛�
 
 该文章则提出了AlphaGeometry2(AG2)，是对AG1的大幅升级，突破了这些限制，而且增强了性能。AG2利用了(leverages)一个更强大的，基于Gemini的语言模型，它是在一个更大更多样的数据集上进行训练的。
 
-作者也提出了一个显著更快，且更加鲁棒的符号引擎，也加入了很多优化，例如：一个简化的规则集合，以及更强的对双点问题(double points)的处理能力。
+作者也提出了一个显著更快，且更加鲁棒的符号引擎，也加入了很多优化，例如：一个简化的规则集合，以及更强的对双点(重合点)问题(double points)的处理能力。
 
 不仅如此，作者团队扩展了领域语言，以覆盖范围更广的几何概念，包括轨迹定理(locus theorems)以及线性方程。
 
@@ -50,7 +43,7 @@ IMO对于全世界的高中生来说，都是一个享誉盛名的数学竞赛�
 
 ## AG2 Key Improvements
 
-- Expanded Domain Language (扩展的领域专用语言)：覆盖轨迹型的定理、线性方程、以及非构造性的(non-constructive)问题声明。
+- Expanded Domain Language (扩展的领域专用语言)：覆盖轨迹型的定理、线性方程、以及非(不可)构造性的(non-constructive)问题声明。
 - Stronger and faster Symbolic Engine (更强更快的符号引擎)：优化的规则集合，新增的对于双点的处理，以及更快的用C++的实现。
 - Advanced Novel Search Algorithm：利用多重搜索树，且利用知识共享。
 - Enhanced Language Model：利用Gemini架构，在一个更大更多样的数据集上训练。
@@ -82,13 +75,13 @@ IMO对于全世界的高中生来说，都是一个享誉盛名的数学竞赛�
 
 另一类AG1不支持的类别是所谓的轨迹问题，主要描述的是如点、线、圆的对象的运动。AG2通过一个新的谓词语法捕捉这种运动。Table 2列出了11个轨迹的例子，以及相关的谓词和它们的语法。此处，作者利用了新的标记 `*` 来充当固定点的占位符。
 
-进一步地，在AG2的证明中，作者引入了明确地谓词，来表示拓扑 / 非退化条件的几何图检查。
+进一步地，在AG2的证明中，作者引入了明确的谓词，来表示拓扑 / 非退化条件的几何图检查。
 
 1. `sameclock a b c d e f` 表示：方向 $A \to B \to C$ 与 $D \to E \to F$ 有同样的顺时针方向。
 2. `noverlap a b` 表示：A和B是不同的点。
-3. `lessthan a b c d` 表示：$AB<CD$ ，是一个在SSA的三角同余定理中使用的声明。
+3. `lessthan a b c d` 表示：$AB<CD$ ，是一个在 $SSA$ 的三角全等定理中使用的声明。
 
-AG2也能通过引入新的谓词，来证明点是相同的，`overlap a b` (点A和B是重合的点)，其中任何涉及A点的谓词也能够被用于B点，反之亦然。在推理闭包中，重合点可以通过成为同一个圆的圆心来定义；因此，作者引入了另一个谓词 `cyclic_with_center` 来捕捉这种情况。此处，`cyclic_with_center a1 a2 ... an x` 表示 $a_1 = a_2 = \dots = a_x$ 是圆的圆心，直到 $a_{x+1 \dots a_n}$ (以免x=0，它也等价于 `cyclic`)。
+AG2也能通过引入一个新的谓词，来证明点是相同的，`overlap a b` (点A和B是重合的点)，其中任何涉及A点的谓词也能够被用于B点，反之亦然。在推理闭包中，重合点可以通过成为同一个圆的圆心来定义；因此，作者引入了另一个谓词 `cyclic_with_center` 来捕捉这种情况。此处，`cyclic_with_center a1 a2 ... an x` 表示 $a_1 = a_2 = \dots = a_x$ 是圆的圆心，直到 $a_{x+1 \dots a_n}$ (以免x=0，它也等价于 `cyclic`)。
 
 > Notice that, when describing a problem, AG1 uses at most 2 predicates to define a point, i.e. each point is defined as the intersection between at most two objects (line or circle).
 
@@ -122,11 +115,11 @@ AG以及其他类似的神经-符号系统的一个很大的弱点，是需要�
 
 在AG2中，作者允许一个或多个点被任意数量的谓词同时定义，这就允许我们也能够覆盖那些非构造性的问题。
 
-考虑一个非构造性问题的声明：“令ABC是一个含有内心I的三角形，使得$IA = 2IB$”，此处的I点不仅被定义为了内心，也就是两条内角平分线的交点，还被第三个谓词“$IA = 2IB$”所定义，而且并没有通用的能够构建这四个点的策略。既然AG2覆盖了那些非构造性的问题，图形构建变成了主干中一个重要的部分，而且通常需要人为干预。与Kruger (2021)的工作类似，作者提出了一下的算法，在给定非构造性问题要求的情况下，自动生成图形。
+考虑一个非构造性问题的声明：“令ABC是一个含有内心I的三角形，使得$IA = 2IB$”，此处的I点不仅被定义为了内心，也就是两条内角平分线的交点，还被第三个谓词“$IA = 2IB$”所定义，而且并没有通用的能够构建这四个点的策略。既然AG2覆盖了那些非构造性的问题，图形构建变成了主干中一个重要的部分，而且通常需要人为干预。与Kruger (2021)的工作类似，作者提出了一个全新的算法，在给定非构造性问题要求的情况下，自动生成图形。
 
 令 $\hat x \in R^{2n}$ 是一个向量，表示所有点的所有坐标。作者将图形中的所有约束 $c$，包括目标，都编码成 $f_c(\hat x) = 0$，其中 $f_c$ 是非线性函数。作者用两个步骤来从数值上搜索一个合适的 $\hat x$。
 
-首先，作者会用ADAM梯度下降优化，在均方误差损失函数 $\Sigma_{c \in C} f_c (\hat x)$ 上运行ADAM梯度下降优化，其中 $C$ 是所有约束的集合，再加上一个非退化性损失。对于每两个点A, B，作者会加上形如 $1/(|AB|^2 + \epsilon)$ 的损失函数，以及一个 $L_2$ 标准化会被加在所有的点上，以避免它们的值变得过大。
+首先，作者会用ADAM梯度下降优化，在均方误差损失函数 $\Sigma_{c \in C} f_c (\hat x)$ 上运行ADAM梯度下降优化，其中 $C$ 是所有约束的集合，再加上一个非退化性损失。对于每两个点A, B，作者会加上形如 $1/(|AB|^2 + \epsilon)$ 的损失函数，以及一个 $L_2$ 标准化应用在所有的点上，以避免它们的值变得过大。
 
 在ADAM优化过后的损失达到一定的阈值之后，作者就不再考虑那些非退化性情况了，并且从梯度下降优化转换到一个高斯-牛顿-列文伯格方法(Gauss-Newton-Levenberg)，来寻求一个联合欠定和超定(under- and over-determined)非线性方程组的数值解。
 
@@ -337,3 +330,17 @@ Figure 8展示了主要的结果：AG2求解了50道题目中的42道IMO几何�
 - 首先，作者的领域语言不支持描述可变数量的点、非线性方程、以及涉及不等式的问题，若要实现“完全求解几何问题”，这些问题必须得到解决。
 - 其次，AG2尚未解决所有的IMO和IMOSL (国际数学奥林匹克竞赛短名单)问题。作者假设，将问题分解为子问题，并应用强化学习方法或许能够弥补这一差距。
 - 最后，在本文中，作者报告了构建一个全自动几何问题求解系统的进展。该系统以自然语言作为输入，并能可靠地输出解决方案，且不会出现任何幻觉。尽管初步结果良好，但作者认为，通过增加更多的形式化示例，并进行有监督的微调，自动形式化的能力还可以进一步提升。
+
+# Third-Party Analysis
+
+[AlphaGeometry2: Deepmind AI outperforms math Olympians at geometry tasks](https://the-decoder.com/alphageometry2-deepmind-ai-outperforms-math-olympians-at-geometry-tasks/)
+
+> Another interesting finding is that language models pre-trained on mathematical datasets and then refined on AlphaGeometry data acquire slightly different abilities than those trained from scratch. Although both learn on the same data, they develop complementary strengths. By combining these models in a new search algorithm called SKEST (Shared Knowledge Ensemble of Search Trees), the solution rate can be further increased.
+
+另一个有趣的发现是：先在数学数据集上预训练，然后在AG的数据上进行优化的语言模型，与从零开始训练的模型相比，获得了相比之下略微不同的能力。尽管两者都在相同的数据上进行学习，但它们发展出了互补的(complementary)优势。通过将这些模型组合在一个名为SKEST（搜索树的共享知识集成， Shared Knowledge Ensemble of Search Trees）的新搜索算法中，解题率可进一步提高。
+
+> As far as can be seen from the work, the language models used have not yet been trained as reasoning models with the currently used RL methods - further performance improvements are therefore possible. It is therefore likely that the next version will rely more heavily on reasoning models and may reduce the role of the symbolic engine, at least experimentally.
+
+目前，从这篇工作中所能看到的情况来看，作者使用的语言模型，并未用到最近被广泛采用的强化学习方法，作为推理模型进行训练——性能还有进一步提升的可能。因此，下个版本很可能会更多地依赖推理模型，并且至少在实验阶段可能会减少符号引擎的作用。
+
+因此，这个用于展示神经符号人工智能性能的示例系统的工作，也反映了当前人工智能研究中的一个核心争论：深度学习模型能否可靠地进行推理？或者更确切地说：像大型LLM这样的生成式transformer模型，能否学会可靠地推理？虽然AG2清晰地展示了神经-符号系统的优势，但该团队对大型语言模型作用的见解，并没有给出一个明确的答案。
